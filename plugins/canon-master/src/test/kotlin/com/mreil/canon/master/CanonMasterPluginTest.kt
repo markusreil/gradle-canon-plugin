@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Master bundle: presence on root and child, propagation through the bundle. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CanonMasterPluginTest {
 

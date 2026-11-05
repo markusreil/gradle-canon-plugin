@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/**
+ * Plugin registration: `canon` on root and children, harmless re-apply, local-only direct apply.
+ */
 @ExtendWith(SoftAssertionsExtension::class)
 class CanonPluginTest {
 

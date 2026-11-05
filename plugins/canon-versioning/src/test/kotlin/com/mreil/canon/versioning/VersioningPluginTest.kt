@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Contributor contract: registration, fail-fast, idempotency, collision, scheme default. */
 @ExtendWith(SoftAssertionsExtension::class)
 class VersioningPluginTest {
 

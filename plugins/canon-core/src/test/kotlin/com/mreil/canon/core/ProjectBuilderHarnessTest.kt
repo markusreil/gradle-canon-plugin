@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Harness sanity: `ProjectBuilder` creates a project in the given dir. */
 @ExtendWith(SoftAssertionsExtension::class)
 class ProjectBuilderHarnessTest {
 

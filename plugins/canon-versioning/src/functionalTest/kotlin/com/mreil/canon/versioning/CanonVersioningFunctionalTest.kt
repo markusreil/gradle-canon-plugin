@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Real-build versioning: inherit-guard green, override fails. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CanonVersioningFunctionalTest {
 

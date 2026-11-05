@@ -17,6 +17,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Engine matrix: every supported type × semantics, plus skip, mismatch, and tree-walk cases. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CanonPropagationTest {
 

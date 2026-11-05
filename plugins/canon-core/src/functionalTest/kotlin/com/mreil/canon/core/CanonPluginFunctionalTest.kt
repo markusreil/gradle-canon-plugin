@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Real-build core wiring: `canon` block resolves on root and child by plugin id. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CanonPluginFunctionalTest {
 

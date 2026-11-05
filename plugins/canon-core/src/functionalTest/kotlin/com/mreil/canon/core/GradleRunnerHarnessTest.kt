@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Harness sanity: `GradleRunner` executes a build. */
 @ExtendWith(SoftAssertionsExtension::class)
 class GradleRunnerHarnessTest {
 

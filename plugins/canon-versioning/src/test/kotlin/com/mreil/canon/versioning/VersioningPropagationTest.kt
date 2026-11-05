@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
+/** Versioning propagation: inherited scheme, drift record, root-version parsing. */
 @ExtendWith(SoftAssertionsExtension::class)
 class VersioningPropagationTest {
 

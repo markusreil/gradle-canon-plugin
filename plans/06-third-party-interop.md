@@ -53,13 +53,13 @@ Notes on the shape:
 |---|----------|----------|-------------------------|
 | D1 | Sample home | New module `plugins/canon-thirdparty-sample`, api-only `main` deps, id `com.example.canon.extra`. Approved | Fixture-only (test-sourceset holder, no module) |
 | D2 | Sample state | One `Property<String>` (`mode`, convention `"auto"`), explicit `@Propagate(SHALLOW)`. Approved | Immutable or inferred semantics |
-| D3 | Ordering coverage | L2 master-first; L1 both orders. Approved | L2 both orders too |
+| D3 | Ordering coverage | L2 master-first; L1 master-first plus sample-without-canon fails fast (a contributor requires `canon` — sample-first is a contract error, not an order). Approved | L2 both orders too |
 | D4 | Collision proof | Same-name twin holder in the sample's test sourceset asserting the clash message. Approved | Second sample module |
 
 ## Acceptance-test layering (uses the Chunk 1 model, no changes)
 
 - **L1 (bulk):** `ProjectBuilder` — master + sample on root (+child): `canon.extra` present on both,
-  root `mode` propagates to child; both apply orders green; same-name twin fails with the clash
+  root `mode` propagates to child; sample-without-`canon` fails fast; same-name twin fails with the clash
   message; sample `main` has no core/master dependency (asserted via `runtimeClasspath`).
 - **L2 (one test):** `GradleRunner` — test build applies master id + sample id, root sets `mode`,
   child guards the inherited value, `help` green. Reuses the combined TestKit classpath pattern
@@ -81,7 +81,7 @@ Notes on the shape:
 
 - [x] **6.1 Sample module.** New module + `ExtraPlugin`/`ExtraExtension` per D1–D2; api-only `main` deps.
    Verify: compiles (AC4 by construction, asserted in 6.2).
-2. **6.2 L1 proof.** `ProjectBuilder` matrix for AC1–AC4 (presence, propagation, both orders, clash,
+- [x] **6.2 L1 proof.** `ProjectBuilder` matrix for AC1–AC4 (presence, propagation, both orders, clash,
    api-only assertion). Verify: `:plugins:canon-thirdparty-sample:test` green.
 3. **6.3 L2 proof.** One `GradleRunner` test (master + sample ids, inherit-guard green). Verify:
    `:plugins:canon-thirdparty-sample:functionalTest` green.
