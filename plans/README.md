@@ -8,7 +8,7 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | 0 | High-level plan (this roadmap) | `00-high-level-plan.md` | done | Approved; detailed plans follow one chunk at a time |
 | 1 | Build scaffolding + test infrastructure | `01-scaffolding-and-test-infra.md` | done | Gate green; retrospective held with no changes |
 | 2 | Core `canon` extension plugin | `02-core-easy-extension.md` | done | Gate green; retrospective held with no changes |
-| 3 | Contributor contract (`canon.versioning` reference) | `03-contributor-contract.md` | in progress | Plan in review; no code until approved |
+| 3 | Contributor contract (`canon.versioning` reference) | `03-contributor-contract.md` | done | Gate green from clean clone; retrospective (3.10) still open |
 | 4 | Root → child propagation (deep/shallow/immutable) | `04-extension-propagation.md` | todo | — |
 | 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | todo | — |
 | 6 | Third-party contributor interop | `06-third-party-interop.md` | todo | — |

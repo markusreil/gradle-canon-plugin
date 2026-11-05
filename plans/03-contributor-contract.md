@@ -61,14 +61,14 @@ whichever comes first) — not before.
 
 ## Acceptance criteria
 
-- [ ] AC1 — Applying core + contributor to the root registers `canon` and `canon.versioning` on root and every
+- [x] AC1 — Applying core + contributor to the root registers `canon` and `canon.versioning` on root and every
       child.
-- [ ] AC2 — Applying only the contributor fails fast with the require-core message and registers nothing.
-- [ ] AC3 — Re-applying the contributor keeps the existing `versioning` instance (no replace, no error).
-- [ ] AC4 — A different contributor claiming `versioning` fails fast with the D4 message.
-- [ ] AC5 — `scheme` defaults to `"semver"`; the parsed version equals the root project's version for valid
+- [x] AC2 — Applying only the contributor fails fast with the require-core message and registers nothing.
+- [x] AC3 — Re-applying the contributor keeps the existing `versioning` instance (no replace, no error).
+- [x] AC4 — A different contributor claiming `versioning` fails fast with the D4 message.
+- [x] AC5 — `scheme` defaults to `"semver"`; the parsed version equals the root project's version for valid
       semver (including `-SNAPSHOT`); anything else fails with a message naming the project and the value.
-- [ ] AC6 — `./gradlew check` green (all suites, all modules); no new warnings; config-cache reuse on the second run.
+- [x] AC6 — `./gradlew check` green (all suites, all modules); no new warnings; config-cache reuse on the second run.
 
 ## Small steps (in order, each verifiable — one step, one commit after review)
 
@@ -102,7 +102,7 @@ whichever comes first) — not before.
    (explicitly allowed by this step, per the AGENTS.md rule); default rule set to start, tune only on concrete
    noise — no custom rule shopping. `detekt` rides with `check`. Applies repo-wide to present and future
    modules. Verify: `detekt` green, findings reviewed.
-- [ ] **3.9 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules; coverage, spotless, and
+- [x] **3.9 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules; coverage, spotless, and
    detekt included); update `plans/README.md` (Chunk 3 → done). Verify: every suite executed.
 - [ ] **3.10 Chunk 3 retrospective (required before Chunk 4).** Same gate as 1.9/2.7: how did Chunk 3 go,
    approach/rules/conventions changes needed, happy with the testing model? Record outcome, amend `AGENTS.md`
