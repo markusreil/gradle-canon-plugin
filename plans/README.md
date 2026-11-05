@@ -6,7 +6,7 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | # | Chunk | Plan file | Status | Notes |
 |---|-------|-----------|--------|-------|
 | 0 | High-level plan (this roadmap) | `00-high-level-plan.md` | done | Approved; detailed plans follow one chunk at a time |
-| 1 | Build scaffolding + test infrastructure | `01-scaffolding-and-test-infra.md` | in progress | Plan approved; implementation not started |
+| 1 | Build scaffolding + test infrastructure | `01-scaffolding-and-test-infra.md` | done | Gate green from clean checkout; retrospective (1.9) still open |
 | 2 | Core `easy` extension plugin | `02-core-easy-extension.md` | todo | — |
 | 3 | Contributor contract (`easy.jvm` reference) | `03-contributor-contract.md` | todo | — |
 | 4 | Root → child propagation (deep/shallow/immutable) | `04-extension-propagation.md` | todo | — |

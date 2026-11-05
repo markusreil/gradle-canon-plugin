@@ -44,25 +44,25 @@ reserved (not yet built) design for the Chunk 8 linking suite.
 ## Fixture convention (binding from here on)
 
 1. No checked-in `src/test/resources/*.gradle(.kts)` fixture files.
-2. Each `GradleRunner` test writes its test project with an explicit helper taking strings, e.g.
-   `writeSettings("…")` / `writeBuild("…")` into `@TempDir` (exact helper name decided at implementation; one
-   private helper per test class until duplication forces a shared one).
+2. Each `GradleRunner` test writes its test project with an explicit private helper taking strings — as
+   implemented in `GradleRunnerHarnessTest`, `write(fileName, content)` with file contents as `"""` text blocks —
+   into `@TempDir`. One private helper per test class until duplication forces a shared one.
 3. A new fixture abstraction is introduced only when a concrete duplication appears, with the duplication cited
    in the PR/plan update.
 
 ## Acceptance criteria (all must hold; no production code beyond skeleton)
 
-- [ ] AC1 — `./gradlew check` is green on the skeleton (compiles, runs `test` + `functionalTest` suites).
-- [ ] AC2 — `test` suite contains one sample `ProjectBuilder` test proving the harness (e.g. a trivial empty-project
+- [x] AC1 — `./gradlew check` is green on the skeleton (compiles, runs `test` + `functionalTest` suites).
+- [x] AC2 — `test` suite contains one sample `ProjectBuilder` test proving the harness (e.g. a trivial empty-project
       assertion or the `easy-core` skeleton presence), written JUnit 5 + injected AssertJ `SoftAssertions`.
-- [ ] AC3 — `functionalTest` suite contains one sample `GradleRunner` test proving the harness: writes
+- [x] AC3 — `functionalTest` suite contains one sample `GradleRunner` test proving the harness: writes
       `settings` + `build` scripts from explicit strings, runs `help` (or equivalent no-op task), asserts success.
-- [ ] AC4 — `gradle/libs.versions.toml` owns all test dependency versions; no hardcoded versions in module builds.
-- [ ] AC5 — L1–L4 mapping (§ above) and the fixture convention (§ above) are agreed as written, or amended in
+- [x] AC4 — `gradle/libs.versions.toml` owns all test dependency versions; no hardcoded versions in module builds.
+- [x] AC5 — L1–L4 mapping (§ above) and the fixture convention (§ above) are agreed as written, or amended in
       review — they become binding for Chunks 2+.
-- [ ] AC6 — Linking-suite design is recorded (§ "Linking design" below): suite name, publish→consume ordering, and
+- [x] AC6 — Linking-suite design is recorded (§ "Linking design" below): suite name, publish→consume ordering, and
       confirmation it stays out of `check` until Chunk 8. No implementation required.
-- [ ] AC7 — `README.md` "Roadmap" + `plans/README.md` reflect Chunk 1 scope; `CHANGELOG.md` gets an entry only if a
+- [x] AC7 — `README.md` "Roadmap" + `plans/README.md` reflect Chunk 1 scope; `CHANGELOG.md` gets an entry only if a
       user-visible change lands (scaffolding alone: no entry beyond the plan).
 
 ## Linking design (reserved for Chunk 8, agreed here)
@@ -75,7 +75,7 @@ reserved (not yet built) design for the Chunk 8 linking suite.
 
 ## Small steps (in order, each verifiable — one step, one commit after review)
 
-1. **1.1 Wrapper + settings.** Add Gradle 9.8.1 wrapper; `settings.gradle.kts` with `rootProject.name`, empty root
+- [x] **1.1 Wrapper + settings.** Add Gradle 9.8.1 wrapper; `settings.gradle.kts` with `rootProject.name`, empty root
    (no production logic in root). The `libs` catalog needs no `dependencyResolutionManagement` block:
    `gradle/libs.versions.toml` at the default location is auto-imported (an explicit `from(...)` fails with
    "Multiple 'from' invocations"). A minimal empty catalog ships in this step so settings evaluates; real
@@ -87,20 +87,22 @@ reserved (not yet built) design for the Chunk 8 linking suite.
    (incubating, unnecessary next to the configuration cache) and `configuration-cache.problems` (default `fail`
    stays — warn mode is a troubleshooting aid, not a persistent setting). Verify: wrapper runs `./gradlew help`;
    `version` resolves to `0.0.1-SNAPSHOT`; second consecutive run reports `Reusing configuration cache`.
-2. **1.2 Version catalog.** `gradle/libs.versions.toml` with `junit-bom`, `junit-jupiter`, `assertj-core`. Verify:
+- [x] **1.2 Version catalog.** `gradle/libs.versions.toml` with `junit-bom`, `junit-jupiter`, `assertj-core`. Verify:
    catalog resolves (build compiles against it).
-3. **1.3 Module skeleton + test conventions.** Create `plugins/easy-core` (`java-gradle-plugin`, `jvm-test-suite`);
+- [x] **1.3 Module skeleton + test conventions.** Create `plugins/easy-core` (`java-gradle-plugin`, `jvm-test-suite`);
    JUnit Platform; AssertJ soft assertions available. No plugin id, no extension code. Verify: module compiles.
-4. **1.4 L1 proof.** One `ProjectBuilder` sample test in `test` (JUnit 5 + injected `SoftAssertions`). Verify: `./gradlew :plugins:easy-core:test` green.
-5. **1.5 L2 proof.** `functionalTest` suite + `pluginUnderTestMetadata`; one `GradleRunner` sample test with
+- [x] **1.4 L1 proof.** One `ProjectBuilder` sample test in `test` (JUnit 5 + injected `SoftAssertions`). Verify: `./gradlew :plugins:easy-core:test` green.
+- [x] **1.5 L2 proof.** `functionalTest` suite + `pluginUnderTestMetadata`; one `GradleRunner` sample test with
    inline-string `settings`/`build` files running `help`. Verify: `./gradlew :plugins:easy-core:functionalTest` green.
-6. **1.6 Conventions doc.** Confirm L1–L4 + fixture rules above (amend in review if needed) and reference them from
+- [x] **1.6 Conventions doc.** Confirm L1–L4 + fixture rules above (amend in review if needed) and reference them from
    the Chunk 2 plan. Verify: this file's two sections are the final wording.
-7. **1.7 Linking reservation.** Record the "Linking design" paragraph as the binding sketch; explicitly *not*
+- [x] **1.7 Linking reservation.** Record the "Linking design" paragraph as the binding sketch; explicitly *not*
    implemented. Verify: `plans/README.md` notes Chunk 8 dependency.
-8. **1.8 Full gate.** `./gradlew check` green from a clean checkout; update `plans/README.md` (Chunk 1 → done),
-   `README.md` roadmap if stale. Verify: gate output pasted in the landing report.
-9. **1.9 Chunk 1 retrospective (required before Chunk 2).** Pause after the gate is green and review: how did Chunk 1
+- [x] **1.8 Full gate.** `./gradlew check` green from a clean checkout; update `plans/README.md` (Chunk 1 → done),
+   `README.md` roadmap if stale. Finding: `check` did not run `functionalTest` until explicitly wired
+   (`tasks.check.dependsOn("functionalTest")` in the module build) — fixed in this step. Verify: gate output
+   pasted in the landing report.
+- [ ] **1.9 Chunk 1 retrospective (required before Chunk 2).** Pause after the gate is green and review: how did Chunk 1
    go, do our approach / rules / conventions in `AGENTS.md` need changes, and are we happy with the testing model
    (L1–L4 split, fixture convention, suite layout)? Record the outcome (keep / adjust + what changes) in the landing
    report and amend `AGENTS.md` / this plan if needed. Verify: retrospective notes exist and any agreed convention

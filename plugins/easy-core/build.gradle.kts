@@ -41,3 +41,7 @@ sourceSets {
         runtimeClasspath += files(tasks.pluginUnderTestMetadata)
     }
 }
+
+tasks.named("check") {
+    dependsOn("functionalTest")
+}
