@@ -83,7 +83,7 @@ Notes on the shape:
    Verify: compiles (AC4 by construction, asserted in 6.2).
 - [x] **6.2 L1 proof.** `ProjectBuilder` matrix for AC1–AC4 (presence, propagation, both orders, clash,
    api-only assertion). Verify: `:plugins:canon-thirdparty-sample:test` green.
-3. **6.3 L2 proof.** One `GradleRunner` test (master + sample ids, inherit-guard green). Verify:
+- [x] **6.3 L2 proof.** One `GradleRunner` test (master + sample ids, inherit-guard green). Verify:
    `:plugins:canon-thirdparty-sample:functionalTest` green.
 4. **6.4 Docs.** README third-party paragraph rewritten to implemented reality + CHANGELOG entry.
    Verify: prose describes exactly what the tests prove.

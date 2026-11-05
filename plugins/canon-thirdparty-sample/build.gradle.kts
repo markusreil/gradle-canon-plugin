@@ -66,6 +66,7 @@ testing {
                 implementation(platform(libs.junit.bom))
                 implementation(libs.junit.jupiter)
                 implementation(libs.assertj.core)
+                implementation(libs.semver4j)
             }
             targets {
                 all {

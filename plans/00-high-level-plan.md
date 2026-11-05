@@ -100,6 +100,11 @@ configures correctly.
 - Smarter test fixtures — explicit strings until duplication hurts.
 - Publishing/release automation — only the local test-publish needed for Chunk 8; real publishing is a follow-up.
 
+## Later (parked, not forgotten)
+
+- Master packaging: how the bundle ships (leaning fat jar with the curated contributors bundled).
+  Decided when Chunk 8 makes the consumption story concrete.
+
 ## Review questions for the maintainer
 
 1. Is one reference contributor (`easy.jvm`) enough for Chunks 3–4, or do you want two to prove multi-contributor propagation earlier?
