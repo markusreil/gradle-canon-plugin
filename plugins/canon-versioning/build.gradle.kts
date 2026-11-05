@@ -1,5 +1,7 @@
 import org.gradle.api.plugins.jvm.JvmTestSuite
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
 
 plugins {
     `java-gradle-plugin`
@@ -37,5 +39,41 @@ testing {
                 implementation(project(":plugins:canon-core"))
             }
         }
+        register<JvmTestSuite>("functionalTest") {
+            useJUnitJupiter()
+            dependencies {
+                implementation(gradleTestKit())
+                implementation(platform(libs.junit.bom))
+                implementation(libs.junit.jupiter)
+                implementation(libs.assertj.core)
+            }
+            targets {
+                all {
+                    testTask.configure {
+                        dependsOn(tasks.pluginUnderTestMetadata)
+                        val coreJar =
+                                project(":plugins:canon-core").tasks.named<Jar>("jar").flatMap {
+                                    it.archiveFile
+                                }
+                        dependsOn(coreJar)
+                        inputs.files(coreJar)
+                        doFirst {
+                            systemProperty(
+                                    "canonCoreJar", coreJar.get().asFile.absolutePath)
+                        }
+                    }
+                }
+            }
+        }
     }
+}
+
+sourceSets {
+    named("functionalTest") {
+        runtimeClasspath += files(tasks.pluginUnderTestMetadata)
+    }
+}
+
+tasks.named("check") {
+    dependsOn("functionalTest")
 }
