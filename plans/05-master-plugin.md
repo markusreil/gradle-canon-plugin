@@ -85,7 +85,7 @@ Notes on the shape:
 - [x] **5.1 Master module + plugin.** New module `plugins/canon-master` (group `com.mreil.canon`, id
    `com.mreil.canon`): `CanonMasterPlugin` applying core then versioning; shipped `implementation`
    dependencies on both. Verify: compiles.
-2. **5.2 L1 proof.** `ProjectBuilder` matrix for AC1–AC2 (presence on root/child, propagation through the
+- [x] **5.2 L1 proof.** `ProjectBuilder` matrix for AC1–AC2 (presence on root/child, propagation through the
    bundle). Verify: `:plugins:canon-master:test` green (in-suite dep on core + versioning for fixtures).
 3. **5.3 L2 proof.** One `GradleRunner` test applying only the master id (inherit-guard green). Verify:
    `:plugins:canon-master:functionalTest` green.
