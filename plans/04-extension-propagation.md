@@ -1,6 +1,7 @@
 # 04 — Root → child extension propagation (core-owned copy engine)
 
-Status: **in review** — no code until maintainer approves this plan.
+Status: **approved** — D1–D7 settled (D3 with an intentionally incomplete type table,
+D5 deep deferred to its chunk, D6 with a kotlin-reflect fallback if needed). Work proceeds in step order.
 
 ## Goal
 
@@ -18,9 +19,9 @@ genuinely shared types.
 ## State inventory (what there is to propagate)
 
 - `canon` itself: empty holder, nothing to copy.
-- `versioning.scheme` (`String`, default `"semver"`): explicitly `@Propagate(IMMUTABLE)` — project-wide, locked
-  by verification. (A plain `String` is deliberately absent from the type table, so versioning-like plain state
-  always requires an explicit mark.)
+- `versioning.scheme` (`Property<String>`, convention `"semver"`): explicitly `@Propagate(IMMUTABLE)` — project-wide, locked
+  by verification. (Per the SPEC rule, public holder state uses Gradle property types; plain state always
+  requires an explicit mark to propagate at all.)
 - `versioning.parsedVersion`: immutable by derivation — always computed from `rootProject.version`, no setter,
   not a property the pass sees; a child-local `version` never leaks into it.
 
@@ -37,16 +38,20 @@ annotation class Propagate(val value: CopySemantics = CopySemantics.SHALLOW)
 ```
 
 Core and every contributor depend on `canon-api` only (contributors still never touch core impl). Notes on the
-shape: the annotation targets the backing *field* (so contributors write a plain `@Propagate(...)` with no
-use-site target) and the engine uses plain JDK field reflection — no kotlin-reflect (see D6). Core's copy pass,
-registered on root `afterEvaluate`, considers each non-private, non-synthetic, non-static field of every `canon`
-sub-extension in every project except root:
+shape: the annotation targets the backing *field* (so contributors write a plain `@Propagate` with no use-site
+target) and the engine uses plain JDK field reflection — no kotlin-reflect (see D6). `resolveMode` lives in one function: an explicit annotation value always wins; an absent annotation
+infers from the field, but only if the field is part of the holder's public surface (public field or
+public getter — Kotlin backing fields are always private, so visibility is read off the accessors).
+Internal and framework state stays local with no annotation needed. Core's copy pass, registered on root
+`afterEvaluate`, considers each non-static, non-synthetic field of every `canon` sub-extension in every
+project except root:
 
-1. Effective semantics = explicit annotation value if present, else the type table (D3); unknown public types
-   throw a clear error naming the project, property, and type.
-2. SHALLOW: write the root value into the child field (children are still pristine — child scripts run later).
-3. DEEP: rejected with "not implemented yet" until its chunk (see D5).
-4. IMMUTABLE: copy the root value, then verify at `projectsEvaluated`: any drift fails the build naming the
+1. Explicit `@Propagate(...)` wins as written. Otherwise `inferFromType` decides: Gradle `Property<T>` →
+   SHALLOW; `List/Set/MapProperty` → DEEP; anything else → throw ("no propagation rule for type …:
+   annotate explicitly"). SHALLOW executes per type: `Property<T>` → `child.convention(root value)`
+   snapshot (skipped when the root value is absent); plain mutable fields → direct write.
+2. DEEP: rejected with "not implemented yet" until its chunk (see D5).
+3. IMMUTABLE: same writers as SHALLOW, then verify at `projectsEvaluated`: any drift fails the build naming the
    project, the property, and the root-owned value. No holder cooperation needed (no lock flags, no custom
    setters).
 
@@ -56,19 +61,21 @@ sub-extension in every project except root:
 |---|----------|----------|-------------------------|
 | D1 | Ownership | Core-owned central pass. One mechanism, free for every present and future contributor. Settled | Keep contributor-owned copies (revert to previous revision) |
 | D2 | Shared types home | New `plugins/canon-api` module (annotations + `CopySemantics` enum, stdlib-only). Core and contributors depend on api; nobody depends on core impl. Settled | Put the annotations in core and accept a core dependency for contributors |
-| D3 | Type-driven defaults | Explicit `@Propagate` value always wins. Otherwise the table decides: Gradle `Property<T>` → convention-mapping (`child.convention(root value)` snapshot at copy time; absent root value skips); `List/Set/MapProperty` → DEEP (rejected as not-implemented until its chunk); `Provider` and everything else → throw ("no propagation rule for type …: annotate explicitly or use a supported type"). Private/synthetic/static fields are never considered. The table grows while working. Settled (convention-mapping per maintainer) | Require explicit marks everywhere (drop the table; unannotated stays local) |
+| D3 | Type-driven defaults | Explicit `@Propagate` value always wins. Otherwise participation requires a public surface — public field or public getter (Kotlin backing fields are always private, so visibility is read off the accessors): internal state stays local with no annotation needed. Given participation, absent annotation → `inferFromType`: `Property<T>` → SHALLOW (convention-mapping snapshot; absent root value skips); `List/Set/MapProperty` → DEEP (rejected as not-implemented until its chunk); anything else → throw ("no propagation rule"). Approved: the table stays intentionally incomplete —
+   per-type defaults are added as concrete needs appear, never speculatively. | Walk all fields and maintain an ignore-list of infra types (rejected: whack-a-mole, proven wrong by `_gr_map_`/`_gr_mc_`) |
 | D4 | Immutable enforcement | Verify-at-`projectsEvaluated` with a clear failure (no holder lock state, no custom setters). Settled | Copy+lock flags in holders (previous revision's approach) |
-| D5 | Deep semantics | Deferred: enum value stays as specified taxonomy, engine rejects it with a clear not-implemented message until its chunk. No test-double proof, no synthetic collection | Prove it now (previous revision's test-double, or a real collection-valued setting) |
-| D6 | Reflection | Plain JDK field reflection only (`getDeclaredField`, `setAccessible`); annotation targets the backing field so contributor code stays clean. No kotlin-reflect. If FIELD-target access proves awkward in implementation, fall back to kotlin-reflect and record why | kotlin-reflect from the start |
-| D7 | Docs | Contract gains the annotation + type-table rule; README propagation paragraph rewritten to implemented reality + CHANGELOG entry | Plan only, no README change |
+| D5 | Deep semantics | Deferred: enum value stays as specified taxonomy, engine rejects it with a clear not-implemented message until its chunk. No test-double proof, no synthetic collection. Approved:
+   deep stays deferred | Prove it now (previous revision's test-double, or a real collection-valued setting) |
+| D6 | Reflection | Plain JDK field reflection only (`getDeclaredField`, `setAccessible`); annotation targets the backing field so contributor code stays clean. No kotlin-reflect. If FIELD-target access proves awkward in implementation, fall back to kotlin-reflect and record why. Approved with that fallback | kotlin-reflect from the start |
+| D7 | Docs | Contract gains the annotation + type-table rule; README propagation paragraph rewritten to implemented reality + CHANGELOG entry. Approved | Plan only, no README change |
 
 ## Acceptance-test layering (uses the Chunk 1 model, no changes)
 
 - **L1 (bulk):** `ProjectBuilder` — call the engine's copy function directly: root `scheme = "custom"` + pristine
   child → child reads `"custom"`; drifted child value fails verification with project + property + root value
-  named; `parsedVersion` ignores child-local `version`; a test-double holder proves the table (bare
-  `Property<String>` inherits via convention without annotation, override wins; absent root value skips;
-  unknown public type throws).
+  named; `parsedVersion` ignores child-local `version`; a test-double holder proves the pass mechanics
+  (unannotated public `Property` inherits via convention, override wins, absent root value skips; unannotated
+  public unknown-typed field throws; private and framework fields are ignored; explicit modes still win).
 - **L2 (two tests):** `GradleRunner` multi-project — (a) root sets `scheme`, child guards the inherited value in
   its script → green `help`; (b) child sets `scheme` → build fails with the immutable message (`buildAndFail`,
   assert output contains it).
@@ -83,19 +90,25 @@ sub-extension in every project except root:
       version.
 - [ ] AC4 — Engine lives in core, annotations in `canon-api`; versioning module depends on api only (no core
       classes on its compile classpath); core never names contributor types.
-- [ ] AC5 — Type table proven: bare `Property` copies without annotation; unknown public types fail with the
-      no-rule message (L1 test-double holder).
+- [ ] AC5 — Mechanics proven on a test-double holder: unannotated public `Property` inherits via convention
+      (override wins, absent root value skips); unannotated public unknown-typed field throws; private and
+      framework fields are ignored; explicit modes still win.
 - [ ] AC6 — `./gradlew check` green (all suites, all modules); no new warnings; config-cache reuse on the second run.
 
 ## Small steps (in order, each verifiable — one step, one commit after review)
 
 - [x] **4.1 `canon-api` module.** New module (group `com.mreil.canon`, Kotlin, stdlib-only): `CopySemantics` enum +
    `@Propagate` annotation (FIELD target, runtime retention, default SHALLOW). Verify: compiles.
-2. **4.2 Core copy engine.** Root `afterEvaluate` walk over the `canon` tree: field enumeration (skip
-   private/synthetic/static), explicit-annotation-wins, type table per D3, DEEP rejected, immutable drift
-   verification at `projectsEvaluated`. JDK reflection only. Verify: compiles (behavior lands in 4.4).
-3. **4.3 Contributor adopts.** `scheme` gets explicit `@Propagate(IMMUTABLE)`; versioning's compile dependency
-   stays api-only. Verify: compiles.
+- [x] **4.2 Core copy engine.** Root `afterEvaluate` walk over the `canon` tree: per-field `resolveMode`
+   (explicit wins, absent → participation gate on public accessors, then type table); SHALLOW writers per
+   field type (convention for `Property`, direct write for plain mutable), DEEP rejected, immutable drift
+   verification at `projectsEvaluated`. JDK reflection only, no kotlin-reflect. Public entry points
+   (L1 calls them directly). As built: `object CanonPropagation` + top-level `RecordedCopy`, KDoc on
+   the object, early L1 matrix in `CanonPropagationTest` (mechanics only; versioning specifics land
+   in 4.4). Verify: compiles (behavior lands in 4.4).
+- [x] **4.3 Contributor adopts.** `scheme` gets explicit `@Propagate(IMMUTABLE)`; versioning's compile dependency
+   stays api-only. As built: plain `@Propagate` with no use-site target compiles on a Kotlin `var`
+   (annotation lands on the backing field). Verify: compiles.
 4. **4.4 L1 proof.** `ProjectBuilder` matrix for AC1–AC5 incl. the table test-double (injected `SoftAssertions`,
    in-suite deps). Verify: `:plugins:canon-core:test` and `:plugins:canon-versioning:test` green.
 5. **4.5 L2 proof.** Two `GradleRunner` multi-project tests (inherit-guard green + override-fails).
@@ -117,11 +130,13 @@ sub-extension in every project except root:
 
 ## Review questions
 
-1. Confirm the remaining open points: D3 (convention-mapping + table + throw-on-unknown), D5 (deep deferred
-   with engine rejection), D6 (JDK field reflection, no kotlin-reflect), D7 (docs). D1/D2/D4 already settled.
+1. Settled: D3 (absent→infer on public surface, explicit wins, unknown throws; table grows on demand),
+   D5 (deep deferred with engine rejection), D6 (JDK field reflection, kotlin-reflect fallback allowed),
+   D7 (docs). D1/D2/D4 already settled.
 2. Resolved: `Property → convention-mapping` (parent value becomes child convention, snapshot at copy time;
    absent root value skips).
-3. Open, strict by default: engine walks all non-private fields and throws on unknown public types. If
-   implementation hits incidental public state that should not propagate, the table gains an explicit
-   local-only rule instead of silently skipping. Both Q2 and Q3 must have final answers recorded in the 4.8
-   retrospective.
+3. Resolved: strictness lives in three places — inference throws on unknown types, explicit modes are
+   honored as written, and immutable drift fails the build. Non-public state stays local via the accessor
+gate (no ignore-list needed — proven by `_gr_map_`/`_gr_mc_` framework fields). If implementation hits a
+   case the table mishandles, extend the table rather than silently skipping; record the evidence in the
+   4.8 retrospective.

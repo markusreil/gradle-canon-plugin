@@ -12,6 +12,12 @@ I've tried this before but I'd like to start over.
 * non-standard or 3rd party contributor plugins can be applied in the build file alongside the master plugin and will wire themselves in correctly.
 * the complete extension tree will be copied from the root project into the children. copies can be deep, shallow, immutable depending
   on whether it is makes sense for specific value to be extended, overrwritten in a child project.
+* contributor sub-extensions expose public state as Gradle lazy property types (`Property`, `ListProperty`,
+  …) — diverting from that rule needs a good reason (propagation and convention-mapping only understand
+  these types). Extensions never take `Project` as a constructor `val`; inject `ObjectFactory` instead
+  and let the plugin wire the project. Holders stay concrete (`@Inject` constructor + concrete
+  `val`s): `abstract` holders have no backing fields for field-targeted `@Propagate` and no
+  name-matchable fields for the reflection copy pass.
 * Contributors can define public apis as shared build services (must be separate build artifacts) that can be shared and then used by other
   contributors.
 

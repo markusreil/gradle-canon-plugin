@@ -9,7 +9,7 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | 1 | Build scaffolding + test infrastructure | `01-scaffolding-and-test-infra.md` | done | Gate green; retrospective held with no changes |
 | 2 | Core `canon` extension plugin | `02-core-easy-extension.md` | done | Gate green; retrospective held with no changes |
 | 3 | Contributor contract (`canon.versioning` reference) | `03-contributor-contract.md` | done | Gate green; retrospective held with no process changes |
-| 4 | Root → child propagation (core-owned copy engine) | `04-extension-propagation.md` | in progress | Plan in review; no code until approved |
+| 4 | Root → child propagation (core-owned copy engine) | `04-extension-propagation.md` | in progress | Plan approved (D1–D7 settled); 4.1–4.2 landed |
 | 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | todo | — |
 | 6 | Third-party contributor interop | `06-third-party-interop.md` | todo | — |
 | 7 | Shared build-service APIs (separate artifacts) | `07-shared-build-services.md` | todo | — |

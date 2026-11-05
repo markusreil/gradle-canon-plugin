@@ -22,7 +22,10 @@ class VersioningPlugin : Plugin<Project> {
                         "(or the canon bundle) before com.mreil.canon.versioning",
                 )
         when (val existing = canon.extensions.findByName("versioning")) {
-            null -> canon.extensions.create("versioning", VersioningExtension::class.java, project)
+            null ->
+                canon.extensions.create("versioning", VersioningExtension::class.java).also {
+                    it.project = project
+                }
             is VersioningExtension -> Unit
             else ->
                 error(

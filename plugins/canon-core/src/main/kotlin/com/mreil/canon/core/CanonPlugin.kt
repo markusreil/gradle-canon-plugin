@@ -8,6 +8,7 @@ class CanonPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         if (project === project.rootProject) {
             project.allprojects { register(it) }
+            CanonPropagation.registerPropagation(project)
         } else {
             register(project)
         }

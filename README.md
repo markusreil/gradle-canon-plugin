@@ -57,6 +57,16 @@ The contract, demonstrated by the reference contributor `com.mreil.canon.version
    your own holder from a re-apply, keep the existing instance.
 5. Re-applying your plugin is harmless.
 
+### Holder and property shape
+
+- Holders are concrete `open` classes, never `abstract`: the field-targeted `@Propagate` annotation and
+  the reflection copy pass both need real backing fields.
+- Take `@Inject constructor(objects: ObjectFactory)` and create every public property explicitly, e.g.
+  `objects.property(String::class.java).convention("semver")`. Public state uses Gradle lazy property
+  types (`Property`, `ListProperty`, …) — anything else needs a good reason.
+- Never take `Project` as a constructor `val`; inject `ObjectFactory` and let the plugin wire the project
+  (e.g. an `internal lateinit var` assigned at registration).
+
 `canon.versioning` manages versioning schemes (default `semver`, parsed from the root project's version via
 semver4j) and doubles as the candidate for testing the external build-service API later.
 

@@ -39,6 +39,7 @@ kotlin {
 }
 
 dependencies {
+    implementation(project(":plugins:canon-api"))
     implementation(libs.semver4j)
 }
 
@@ -69,11 +70,16 @@ testing {
                                 project(":plugins:canon-core").tasks.named<Jar>("jar").flatMap {
                                     it.archiveFile
                                 }
-                        dependsOn(coreJar)
-                        inputs.files(coreJar)
+                        val apiJar =
+                                project(":plugins:canon-api").tasks.named<Jar>("jar").flatMap {
+                                    it.archiveFile
+                                }
+                        dependsOn(coreJar, apiJar)
+                        inputs.files(coreJar, apiJar)
                         doFirst {
                             systemProperty(
                                     "canonCoreJar", coreJar.get().asFile.absolutePath)
+                            systemProperty("canonApiJar", apiJar.get().asFile.absolutePath)
                         }
                     }
                 }

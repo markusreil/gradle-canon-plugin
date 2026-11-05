@@ -26,6 +26,10 @@ kotlin {
     jvmToolchain(17)
 }
 
+dependencies {
+    implementation(project(":plugins:canon-api"))
+}
+
 group = "com.mreil.canon"
 
 gradlePlugin {

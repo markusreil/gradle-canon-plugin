@@ -73,7 +73,7 @@ class VersioningPluginTest {
         root.pluginManager.apply(VersioningPlugin::class.java)
         val extension = versioningOf(root) as VersioningExtension
 
-        softly.assertThat(extension.scheme).isEqualTo("semver")
+        softly.assertThat(extension.scheme.get()).isEqualTo("semver")
         softly.assertThat(extension.parsedVersion().toString()).isEqualTo("1.2.3")
     }
 

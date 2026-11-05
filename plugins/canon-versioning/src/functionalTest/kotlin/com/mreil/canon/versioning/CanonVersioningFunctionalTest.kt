@@ -79,6 +79,7 @@ class CanonVersioningFunctionalTest {
                 .map(::File)
                 .toMutableList()
         files.add(File(System.getProperty("canonCoreJar")))
+        files.add(File(System.getProperty("canonApiJar")))
         return files
     }
 
