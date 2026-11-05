@@ -35,16 +35,16 @@ chunk — contributors (Chunk 3) and propagation (Chunk 4) come later. Applying 
 
 ## Acceptance criteria
 
-- [ ] AC1 — Applying the core plugin to the root project registers a `canon` extension on root and on every child.
+- [x] AC1 — Applying the core plugin to the root project registers a `canon` extension on root and on every child.
       Truly late-added children rely on Gradle's live `allprojects` (a framework guarantee `ProjectBuilder`
       cannot simulate — verified: a `withParent` child built after apply does not re-fire it); the real-build
       path is proven by the multi-project L2 test instead.
-- [ ] AC2 — Re-applying the plugin to any project does not fail and does not replace the existing `canon` instance.
-- [ ] AC3 — Applying the plugin directly to a single (non-root) project registers `canon` there without touching
+- [x] AC2 — Re-applying the plugin to any project does not fail and does not replace the existing `canon` instance.
+- [x] AC3 — Applying the plugin directly to a single (non-root) project registers `canon` there without touching
       siblings or the parent.
-- [ ] AC4 — The plugin is published under its id (`gradlePlugin { plugins { … } }` block, no implementation-class
+- [x] AC4 — The plugin is published under its id (`gradlePlugin { plugins { … } }` block, no implementation-class
       application in tests except where the L1/L2 split requires it); the L2 test applies it by id.
-- [ ] AC5 — `./gradlew check` green (both suites); no new warnings; config-cache reuse on the second run.
+- [x] AC5 — `./gradlew check` green (both suites); no new warnings; config-cache reuse on the second run.
 
 ## Small steps (in order, each verifiable — one step, one commit after review)
 
@@ -63,9 +63,9 @@ chunk — contributors (Chunk 3) and propagation (Chunk 4) come later. Applying 
 5. **2.5 L2 proof.** `GradleRunner` test: root applies plugin by id, child configures empty `canon {}` block (inline
    Kotlin-DSL strings, private `write` helper), `help` succeeds. Verify: `:plugins:easy-core:functionalTest`
    green.
-6. **2.6 Full gate.** `./gradlew check` green from the working tree; update `plans/README.md` (Chunk 2 → done).
-   Verify: both suites ran (not skipped, not from-cache-only — use `--rerun-tasks` once).
-7. **2.7 Chunk 2 retrospective (required before Chunk 3).** Same gate as 1.9: how did Chunk 2 go, approach/rules/
+- [x] **2.6 Full gate.** `./gradlew check` green from the working tree; update `plans/README.md` (Chunk 2 → done).
+   Verified with `--rerun-tasks`: `test` and `functionalTest` both executed, BUILD SUCCESSFUL.
+- [ ] **2.7 Chunk 2 retrospective (required before Chunk 3).** Same gate as 1.9: how did Chunk 2 go, approach/rules/
    conventions changes needed, happy with the testing model? Record outcome, amend `AGENTS.md` if needed.
 
 ## Verification
