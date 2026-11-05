@@ -33,7 +33,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
    - `libs` version catalog for all dependencies.
    - Never use top-level `test*` configurations (`testImplementation`, `testRuntimeOnly`, …). Declare test
      dependencies inside the owning `JvmTestSuite` (`testing { suites { named<JvmTestSuite>(…) { dependencies { … } } } }`).
-   - JVM test suites; JUnit 5 + AssertJ soft assertions.
+   - JVM test suites; JUnit 5 + AssertJ soft assertions via the injected `SoftAssertions` extension
+     (`@ExtendWith(SoftAssertionsExtension.class)`), not the static `assertSoftly` entry point.
    - No external Gradle plugins unless explicitly allowed in the plan.
 7. **Docs are part of done.** Keep these updated in the same change that makes them stale:
    - `README.md` — consumer view: how a build author uses the plugin (installation, `easy {}` DSL, contributors,

@@ -54,7 +54,7 @@ reserved (not yet built) design for the Chunk 8 linking suite.
 
 - [ ] AC1 — `./gradlew check` is green on the skeleton (compiles, runs `test` + `functionalTest` suites).
 - [ ] AC2 — `test` suite contains one sample `ProjectBuilder` test proving the harness (e.g. a trivial empty-project
-      assertion or the `easy-core` skeleton presence), written JUnit 5 + AssertJ `assertSoftly`.
+      assertion or the `easy-core` skeleton presence), written JUnit 5 + injected AssertJ `SoftAssertions`.
 - [ ] AC3 — `functionalTest` suite contains one sample `GradleRunner` test proving the harness: writes
       `settings` + `build` scripts from explicit strings, runs `help` (or equivalent no-op task), asserts success.
 - [ ] AC4 — `gradle/libs.versions.toml` owns all test dependency versions; no hardcoded versions in module builds.
@@ -91,7 +91,7 @@ reserved (not yet built) design for the Chunk 8 linking suite.
    catalog resolves (build compiles against it).
 3. **1.3 Module skeleton + test conventions.** Create `plugins/easy-core` (`java-gradle-plugin`, `jvm-test-suite`);
    JUnit Platform; AssertJ soft assertions available. No plugin id, no extension code. Verify: module compiles.
-4. **1.4 L1 proof.** One `ProjectBuilder` sample test in `test` (JUnit 5 + `assertSoftly`). Verify: `./gradlew :plugins:easy-core:test` green.
+4. **1.4 L1 proof.** One `ProjectBuilder` sample test in `test` (JUnit 5 + injected `SoftAssertions`). Verify: `./gradlew :plugins:easy-core:test` green.
 5. **1.5 L2 proof.** `functionalTest` suite + `pluginUnderTestMetadata`; one `GradleRunner` sample test with
    inline-string `settings`/`build` files running `help`. Verify: `./gradlew :plugins:easy-core:functionalTest` green.
 6. **1.6 Conventions doc.** Confirm L1–L4 + fixture rules above (amend in review if needed) and reference them from
