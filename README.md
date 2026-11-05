@@ -12,8 +12,10 @@ Convention plugins for Gradle, built around one shared `canon` extension.
 - One **master plugin** (`com.mreil.canon`) bundles core + the curated contributors (currently just
   `canon.versioning`). Apply the single id and the bundle is applied together — no per-contributor
   `apply` needed. Bundle and contributors version in lockstep.
-- **Third-party contributors** (yours or anyone's) apply alongside the master plugin and wire themselves into
-  the same `canon` tree.
+- **Third-party contributors** apply their own plugin id next to the master bundle and wire into the
+  same `canon` tree — no core classes needed, only `canon-api`. The reference is the `extra` sample:
+  its `mode` propagates root → children, both apply orders work, and name clashes fail fast with a
+  contract message.
 - Values set on the **root** project flow into **children** once the root is evaluated: `Property`
   values are inherited as conventions (an absent root value leaves children untouched), values marked
   `IMMUTABLE` additionally fail the build if a child overrides them. Collection properties
@@ -54,8 +56,9 @@ The contract, demonstrated by the reference contributor `com.mreil.canon.version
 
 1. Coordinates live under `com.mreil.canon.*`; the sub-extension name matches the id suffix (`versioning`).
 2. Apply your plugin to the **root** project and require `canon` to be present — put there by the build author
-   or the master bundle — failing fast with a clear message otherwise. Never apply core yourself; you need no
-   core classes on your classpath (Gradle API only).
+   or the master bundle — failing fast with a clear message otherwise. Ordering is the author's job:
+   no deferred (`withPlugin`) registration, so a missing core fails loudly instead of silently doing
+   nothing. Non-bundled plugins must be applied after master (or core). Never apply core yourself; you need no core classes on your classpath (Gradle API only).
 3. Register your holder via `canon.extensions.create("<name>", <Type>::class.java)` on every project.
 4. Names are unique per `canon` tree: if the name is taken by a different implementation, fail fast; if it is
    your own holder from a re-apply, keep the existing instance.

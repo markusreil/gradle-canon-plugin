@@ -54,7 +54,8 @@ Notes on the shape:
 | D1 | Sample home | New module `plugins/canon-thirdparty-sample`, api-only `main` deps, id `com.example.canon.extra`. Approved | Fixture-only (test-sourceset holder, no module) |
 | D2 | Sample state | One `Property<String>` (`mode`, convention `"auto"`), explicit `@Propagate(SHALLOW)`. Approved | Immutable or inferred semantics |
 | D3 | Ordering coverage | L2 master-first; L1 master-first plus sample-without-canon fails fast (a contributor requires `canon` — sample-first is a contract error, not an order). Approved | L2 both orders too |
-| D4 | Collision proof | Same-name twin holder in the sample's test sourceset asserting the clash message. Approved | Second sample module |
+| D4 | Collision proof | Same-name twin holder in the sample's test sourceset asserting the clash message. Approved |
+| D5 | Missing-core handling | Fail fast at apply time (`requires 'canon'`); no `withPlugin` deferred registration — silent no-ops violate rule 9. Non-bundled plugins apply after master (or core). Approved | Second sample module |
 
 ## Acceptance-test layering (uses the Chunk 1 model, no changes)
 
@@ -85,7 +86,7 @@ Notes on the shape:
    api-only assertion). Verify: `:plugins:canon-thirdparty-sample:test` green.
 - [x] **6.3 L2 proof.** One `GradleRunner` test (master + sample ids, inherit-guard green). Verify:
    `:plugins:canon-thirdparty-sample:functionalTest` green.
-4. **6.4 Docs.** README third-party paragraph rewritten to implemented reality + CHANGELOG entry.
+- [x] **6.4 Docs.** README third-party paragraph rewritten to implemented reality + CHANGELOG entry.
    Verify: prose describes exactly what the tests prove.
 5. **6.5 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update
    `plans/README.md` (Chunk 6 → done). Verify: every suite executed.

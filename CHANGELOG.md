@@ -25,3 +25,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `scheme` is now a `Property<String>` marked `IMMUTABLE`.
 - `com.mreil.canon` master bundle: applying the single id wires core plus the curated contributors
   (currently `canon.versioning`); versions move in lockstep.
+- Third-party interop proven by the `extra` sample: foreign holders propagate, both apply orders work,
+  clashes fail fast; sample stays api-only and never joins the bundle.
