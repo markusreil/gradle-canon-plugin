@@ -13,8 +13,11 @@ Convention plugins for Gradle, built around one shared `canon` extension.
   is applied together — no per-contributor `apply` needed.
 - **Third-party contributors** (yours or anyone's) apply alongside the master plugin and wire themselves into
   the same `canon` tree.
-- Configuration written on the **root** project flows into **children**, with per-value semantics: some values
-  are extended (deep copy), some overwritten (shallow copy), some locked (immutable).
+- Values set on the **root** project flow into **children** once the root is evaluated: `Property`
+  values are inherited as conventions (an absent root value leaves children untouched), values marked
+  `IMMUTABLE` additionally fail the build if a child overrides them. Collection properties
+  (`ListProperty`, …) are reserved for deep merge (not implemented yet); anything else only
+  propagates with an explicit `@Propagate` mark.
 - Contributors can expose **shared build services** (separate artifacts) that other contributors consume.
 
 ## Intended usage (target API — not yet implemented)
@@ -66,6 +69,18 @@ The contract, demonstrated by the reference contributor `com.mreil.canon.version
   types (`Property`, `ListProperty`, …) — anything else needs a good reason.
 - Never take `Project` as a constructor `val`; inject `ObjectFactory` and let the plugin wire the project
   (e.g. an `internal lateinit var` assigned at registration).
+
+### Propagation
+
+Values flow root → children automatically; you only declare semantics:
+
+- Mark propagatable state with `@Propagate(...)` (`SHALLOW`, `IMMUTABLE`; `DEEP` is reserved and
+  currently rejected with a clear error). Without the annotation, `Property` fields default to `SHALLOW`
+  and collection properties to `DEEP`; anything else fails fast — annotate it explicitly.
+- Only public state propagates: fields with a public accessor (Kotlin-internal and private state stays
+  local). Static and synthetic fields are ignored.
+- `IMMUTABLE` copies like `SHALLOW`, then fails the build at the end of configuration if a child changed
+  the value, naming the project, the property, and the root-owned value.
 
 `canon.versioning` manages versioning schemes (default `semver`, parsed from the root project's version via
 semver4j) and doubles as the candidate for testing the external build-service API later.

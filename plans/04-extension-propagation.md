@@ -115,7 +115,7 @@ project except root:
   engine bugs (decorated-subclass hierarchy walk, internal-visibility gate). Verify: `:plugins:canon-core:test` and `:plugins:canon-versioning:test` green.
 - [x] **4.5 L2 proof.** Two `GradleRunner` multi-project tests (inherit-guard green + override-fails).
    Verify: `:plugins:canon-versioning:functionalTest` green.
-6. **4.6 Contract + propagation docs.** README contributor section gains the annotation + type-table rule;
+- [x] **4.6 Contract + propagation docs.** README contributor section gains the annotation + type-table rule;
    propagation paragraph rewritten to implemented reality (per D7) + CHANGELOG entry. Verify: prose describes
    exactly what the tests prove.
 7. **4.7 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update `plans/README.md`

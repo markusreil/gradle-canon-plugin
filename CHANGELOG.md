@@ -19,3 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reference contributor `com.mreil.canon.versioning`: `canon.versioning` sub-extension managing versioning
   schemes (default `semver`, version parsed from the root project's version via semver4j); establishes the
   contributor contract (require `canon`, fail fast otherwise, idempotent re-apply, unique names).
+- Root → child propagation: core copies `canon` sub-extension values root → children (`Property` values
+  inherited as conventions, explicit `@Propagate(SHALLOW | IMMUTABLE | DEEP)` semantics in the new
+  `com.mreil.canon:canon-api` module, immutable drift check at the end of configuration). Reference
+  `scheme` is now a `Property<String>` marked `IMMUTABLE`.
