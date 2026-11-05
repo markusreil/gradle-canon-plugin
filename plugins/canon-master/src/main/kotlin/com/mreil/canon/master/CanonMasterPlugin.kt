@@ -5,9 +5,7 @@ import com.mreil.canon.versioning.VersioningPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-/**
- * Bundle entry point: applies core plus every curated contributor to the project.
- */
+/** Bundle entry point: applies core plus every curated contributor to the project. */
 class CanonMasterPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {

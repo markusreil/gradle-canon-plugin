@@ -9,8 +9,9 @@ Convention plugins for Gradle, built around one shared `canon` extension.
 
 - One **core plugin** registers a `canon` extension container on **all** projects.
 - **Contributor plugins** add sub-extensions under it, e.g. `canon.versioning`.
-- One **master plugin** bundles core + a curated set of contributors. Put it on the classpath and the bundle
-  is applied together — no per-contributor `apply` needed.
+- One **master plugin** (`com.mreil.canon`) bundles core + the curated contributors (currently just
+  `canon.versioning`). Apply the single id and the bundle is applied together — no per-contributor
+  `apply` needed. Bundle and contributors version in lockstep.
 - **Third-party contributors** (yours or anyone's) apply alongside the master plugin and wire themselves into
   the same `canon` tree.
 - Values set on the **root** project flow into **children** once the root is evaluated: `Property`

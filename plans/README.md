@@ -10,7 +10,7 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | 2 | Core `canon` extension plugin | `02-core-easy-extension.md` | done | Gate green; retrospective held with no changes |
 | 3 | Contributor contract (`canon.versioning` reference) | `03-contributor-contract.md` | done | Gate green; retrospective held with no process changes |
 | 4 | Root → child propagation (core-owned copy engine) | `04-extension-propagation.md` | done | L1 + L2 green; engine bugs fixed via L1; full gate green |
-| 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | in progress | Plan approved (D1–D4 settled); 5.1 underway |
+| 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | done | Single-id bundle + propagation green; full gate green |
 | 6 | Third-party contributor interop | `06-third-party-interop.md` | todo | — |
 | 7 | Shared build-service APIs (separate artifacts) | `07-shared-build-services.md` | todo | — |
 | 8 | Published-artifact linking verification | `08-linking-verification.md` | todo | Depends on test-publish infra from Chunk 1 |

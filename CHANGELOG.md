@@ -23,3 +23,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   inherited as conventions, explicit `@Propagate(SHALLOW | IMMUTABLE | DEEP)` semantics in the new
   `com.mreil.canon:canon-api` module, immutable drift check at the end of configuration). Reference
   `scheme` is now a `Property<String>` marked `IMMUTABLE`.
+- `com.mreil.canon` master bundle: applying the single id wires core plus the curated contributors
+  (currently `canon.versioning`); versions move in lockstep.

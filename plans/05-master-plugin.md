@@ -89,11 +89,11 @@ Notes on the shape:
    bundle). Verify: `:plugins:canon-master:test` green (in-suite dep on core + versioning for fixtures).
 - [x] **5.3 L2 proof.** One `GradleRunner` test applying only the master id (inherit-guard green). Verify:
    `:plugins:canon-master:functionalTest` green.
-4. **5.4 Docs.** README master section rewritten to implemented reality (id, fixed bundle, lockstep) +
+- [x] **5.4 Docs.** README master section rewritten to implemented reality (id, fixed bundle, lockstep) +
    CHANGELOG entry. Verify: prose describes exactly what the tests prove.
-5. **5.5 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update
+- [x] **5.5 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update
    `plans/README.md` (Chunk 5 → done). Verify: every suite executed.
-6. **5.6 Chunk 5 retrospective (required before Chunk 6).** Record outcome, amend `AGENTS.md` if needed.
+- [x] **5.6 Chunk 5 retrospective (required before Chunk 6).** Outcome: nothing came up — keep everything as is.
 
 ## Verification
 
