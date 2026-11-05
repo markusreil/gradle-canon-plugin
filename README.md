@@ -71,6 +71,8 @@ The contract, demonstrated by the reference contributor `com.mreil.canon.version
 - Take `@Inject constructor(objects: ObjectFactory)` and create every public property explicitly, e.g.
   `objects.property(String::class.java).convention("semver")`. Public state uses Gradle lazy property
   types (`Property`, `ListProperty`, …) — anything else needs a good reason.
+- Rule of thumb: the holder configures the plugin; internal state stays out of it. Most contributors
+  carry an `enabled` switch (`Property<Boolean>`, convention `true`) that gates their wiring.
 - Never take `Project` as a constructor `val`; inject `ObjectFactory` and let the plugin wire the project
   (e.g. an `internal lateinit var` assigned at registration).
 

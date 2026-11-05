@@ -73,7 +73,7 @@ rather than growing plan scope (AGENTS.md rule 9). DEEP merge stays deferred.
 - [x] **7.1 Service shape (review).**: module layout, service
    API, registration and isolation rules, which tests prove what. No code. Verify: review approves.
 - [x] **7.2 Service module.** New module with the service API + implementation. Verify: compiles.
-3. **7.3 L1 proof.** Unit tests for AC1–AC3. Verify: green.
+- [x] **7.3 L1 proof.** Unit tests for AC1–AC3. Verify: green.
 4. **7.4 L2 proof.** `GradleRunner` test proving the wired experience. Verify: green.
 5. **7.5 Docs.** README service section + CHANGELOG entry describing exactly what the tests prove.
    Verify: prose matches tests.
