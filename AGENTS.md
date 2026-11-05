@@ -38,6 +38,9 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
    - Production and test sources are Kotlin (`src/main/kotlin`, `src/test/kotlin`, …); the Kotlin version is
      managed in the `libs` catalog. No Java sources anywhere.
    - No external Gradle plugins unless explicitly allowed in the plan.
+   - Test suites may depend on sibling modules to set up fixtures (e.g. applying another plugin under test);
+     shipped artifacts stay decoupled — the dependency lives in the `testing { suites { … } }` block, never in
+     main.
 7. **Docs are part of done.** Keep these updated in the same change that makes them stale:
    - `README.md` — consumer view: how a build author uses the plugin (installation, `easy {}` DSL, contributors,
      master plugin, third-party contributors, build services). Never documents internals as if they were the API.

@@ -104,9 +104,11 @@ whichever comes first) — not before.
    modules. Verify: `detekt` green, findings reviewed.
 - [x] **3.9 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules; coverage, spotless, and
    detekt included); update `plans/README.md` (Chunk 3 → done). Verify: every suite executed.
-- [ ] **3.10 Chunk 3 retrospective (required before Chunk 4).** Same gate as 1.9/2.7: how did Chunk 3 go,
-   approach/rules/conventions changes needed, happy with the testing model? Record outcome, amend `AGENTS.md`
-   if needed.
+- [x] **3.10 Chunk 3 retrospective (required before Chunk 4).** Outcome: no process changes. Lessons banked:
+   test suites may depend on sibling modules for fixture setup while shipped artifacts stay decoupled (new
+   AGENTS.md rule); cross-plugin L2 needs an explicit combined TestKit classpath (metadata + other jars);
+   system properties don't resolve providers — set them in `doFirst`; `PluginApplicationException` wraps
+   plugin failures, so L1 assertions check the stack trace.
 
 ## Verification
 
