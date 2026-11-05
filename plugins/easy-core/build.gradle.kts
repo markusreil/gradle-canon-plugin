@@ -5,6 +5,11 @@ import org.gradle.kotlin.dsl.register
 plugins {
     `java-gradle-plugin`
     `jvm-test-suite`
+    alias(libs.plugins.kotlin.jvm)
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 group = "com.mreil.canon"
