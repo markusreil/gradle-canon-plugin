@@ -65,8 +65,8 @@ chunk — contributors (Chunk 3) and propagation (Chunk 4) come later. Applying 
    green.
 - [x] **2.6 Full gate.** `./gradlew check` green from the working tree; update `plans/README.md` (Chunk 2 → done).
    Verified with `--rerun-tasks`: `test` and `functionalTest` both executed, BUILD SUCCESSFUL.
-- [ ] **2.7 Chunk 2 retrospective (required before Chunk 3).** Same gate as 1.9: how did Chunk 2 go, approach/rules/
-   conventions changes needed, happy with the testing model? Record outcome, amend `AGENTS.md` if needed.
+- [x] **2.7 Chunk 2 retrospective (required before Chunk 3).** Outcome: nothing came up — keep everything as is.
+   The `ProjectBuilder`-cannot-simulate-live-`allprojects` limitation (2.4) stands as the known testing-model caveat.
 
 ## Verification
 
