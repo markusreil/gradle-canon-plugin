@@ -102,11 +102,11 @@ reserved (not yet built) design for the Chunk 8 linking suite.
    `README.md` roadmap if stale. Finding: `check` did not run `functionalTest` until explicitly wired
    (`tasks.check.dependsOn("functionalTest")` in the module build) — fixed in this step. Verify: gate output
    pasted in the landing report.
-- [ ] **1.9 Chunk 1 retrospective (required before Chunk 2).** Pause after the gate is green and review: how did Chunk 1
+- [x] **1.9 Chunk 1 retrospective (required before Chunk 2).** Pause after the gate is green and review: how did Chunk 1
    go, do our approach / rules / conventions in `AGENTS.md` need changes, and are we happy with the testing model
-   (L1–L4 split, fixture convention, suite layout)? Record the outcome (keep / adjust + what changes) in the landing
-   report and amend `AGENTS.md` / this plan if needed. Verify: retrospective notes exist and any agreed convention
-   changes are applied before Chunk 2 starts.
+   (L1–L4 split, fixture convention, suite layout)? Outcome: nothing came up — keep everything as is, no convention
+   changes. Carried forward: every chunk plan from here on ends with the same retrospective step, starting with
+   chunk 2.
 
 ## Verification
 

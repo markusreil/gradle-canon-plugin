@@ -6,8 +6,8 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | # | Chunk | Plan file | Status | Notes |
 |---|-------|-----------|--------|-------|
 | 0 | High-level plan (this roadmap) | `00-high-level-plan.md` | done | Approved; detailed plans follow one chunk at a time |
-| 1 | Build scaffolding + test infrastructure | `01-scaffolding-and-test-infra.md` | done | Gate green from clean checkout; retrospective (1.9) still open |
-| 2 | Core `easy` extension plugin | `02-core-easy-extension.md` | todo | — |
+| 1 | Build scaffolding + test infrastructure | `01-scaffolding-and-test-infra.md` | done | Gate green; retrospective held with no changes |
+| 2 | Core `easy` extension plugin | `02-core-easy-extension.md` | in progress | Plan in review; no code until approved |
 | 3 | Contributor contract (`easy.jvm` reference) | `03-contributor-contract.md` | todo | — |
 | 4 | Root → child propagation (deep/shallow/immutable) | `04-extension-propagation.md` | todo | — |
 | 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | todo | — |
