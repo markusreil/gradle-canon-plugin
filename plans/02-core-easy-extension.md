@@ -35,8 +35,10 @@ chunk — contributors (Chunk 3) and propagation (Chunk 4) come later. Applying 
 
 ## Acceptance criteria
 
-- [ ] AC1 — Applying the core plugin to the root project registers a `canon` extension on root and on every child
-      (including a child added after the plugin was applied).
+- [ ] AC1 — Applying the core plugin to the root project registers a `canon` extension on root and on every child.
+      Truly late-added children rely on Gradle's live `allprojects` (a framework guarantee `ProjectBuilder`
+      cannot simulate — verified: a `withParent` child built after apply does not re-fire it); the real-build
+      path is proven by the multi-project L2 test instead.
 - [ ] AC2 — Re-applying the plugin to any project does not fail and does not replace the existing `canon` instance.
 - [ ] AC3 — Applying the plugin directly to a single (non-root) project registers `canon` there without touching
       siblings or the parent.
@@ -54,8 +56,10 @@ chunk — contributors (Chunk 3) and propagation (Chunk 4) come later. Applying 
 2. **2.2 Holder.** Add `CanonExtension` (empty, extensible holder per D2). No wiring yet. Verify: compiles.
 3. **2.3 Apply logic.** `CanonPlugin` implements D3 (root → allprojects live wiring, local-only otherwise,
    `findByName` idempotency guard). Verify: compiles.
-4. **2.4 L1 proof.** `ProjectBuilder` tests: root+child presence, late-added child, idempotent re-apply, local-only
-   direct application (injected `SoftAssertions`, in-suite deps). Verify: `:plugins:easy-core:test` green.
+4. **2.4 L1 proof.** `ProjectBuilder` tests: root+child presence, idempotent re-apply, local-only
+   direct application (injected `SoftAssertions`, in-suite deps). No late-child L1 test: `ProjectBuilder`
+   bypasses Gradle's live-`allprojects` firing (proven by a failing attempt); that path is covered by the
+   multi-project L2 test. Verify: `:plugins:easy-core:test` green.
 5. **2.5 L2 proof.** `GradleRunner` test: root applies plugin by id, child configures empty `canon {}` block (inline
    Kotlin-DSL strings, private `write` helper), `help` succeeds. Verify: `:plugins:easy-core:functionalTest`
    green.
