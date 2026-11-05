@@ -52,16 +52,6 @@ class VersioningPropagationTest {
         softly.assertThat(record.extensionName).isEqualTo("versioning")
     }
 
-    @Test
-    fun parsedVersionIgnoresChildVersion(softly: SoftAssertions) {
-        val root = rootProject("1.2.3")
-        val child = childOf(root, "child")
-        child.version = "9.9.9"
-        applyAll(root)
-
-        softly.assertThat(versioningOf(child).parsedVersion().toString()).isEqualTo("1.2.3")
-    }
-
     private fun applyAll(root: Project) {
         root.pluginManager.apply(CanonPlugin::class.java)
         root.pluginManager.apply(VersioningPlugin::class.java)

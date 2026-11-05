@@ -1,6 +1,7 @@
 package com.mreil.canon.versioning
 
 import com.mreil.canon.core.CanonPlugin
+import com.mreil.canon.semver.SemverService
 import java.io.File
 import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension
@@ -68,51 +69,72 @@ class VersioningPluginTest {
     }
 
     @Test
-    fun schemeDefaultsToSemverAndVersionsParse(softly: SoftAssertions) {
+    fun schemeDefaultsToSemver(softly: SoftAssertions) {
         val root = rootProject("1.2.3")
         root.pluginManager.apply(CanonPlugin::class.java)
         root.pluginManager.apply(VersioningPlugin::class.java)
         val extension = versioningOf(root) as VersioningExtension
 
         softly.assertThat(extension.scheme.get()).isEqualTo("semver")
-        softly.assertThat(extension.parsedVersion().toString()).isEqualTo("1.2.3")
     }
 
     @Test
-    fun snapshotVersionParses(softly: SoftAssertions) {
+    fun serviceParsesRootVersion(softly: SoftAssertions) {
+        val root = rootProject("1.2.3")
+        root.pluginManager.apply(CanonPlugin::class.java)
+        root.pluginManager.apply(VersioningPlugin::class.java)
+
+        softly.assertThat(semverOf(root).parsed.toString()).isEqualTo("1.2.3")
+        softly.assertThat(semverOf(root).isSnapshot()).isFalse()
+    }
+
+    @Test
+    fun serviceReflectsSnapshotVersion(softly: SoftAssertions) {
         val root = rootProject("1.2.3-SNAPSHOT")
         root.pluginManager.apply(CanonPlugin::class.java)
         root.pluginManager.apply(VersioningPlugin::class.java)
 
-        softly
-            .assertThat((versioningOf(root) as VersioningExtension).parsedVersion().toString())
-            .isEqualTo("1.2.3-SNAPSHOT")
+        softly.assertThat(semverOf(root).parsed.toString()).isEqualTo("1.2.3-SNAPSHOT")
+        softly.assertThat(semverOf(root).isSnapshot()).isTrue()
     }
 
     @Test
-    fun garbageVersionFailsWithProjectAndValue(softly: SoftAssertions) {
+    fun serviceIgnoresChildVersion(softly: SoftAssertions) {
+        val root = rootProject("1.2.3")
+        val child = childOf(root, "child")
+        child.version = "9.9.9"
+        root.pluginManager.apply(CanonPlugin::class.java)
+        root.pluginManager.apply(VersioningPlugin::class.java)
+
+        softly.assertThat(semverOf(root).parsed.toString()).isEqualTo("1.2.3")
+    }
+
+    @Test
+    fun garbageVersionFailsFastAtApply(softly: SoftAssertions) {
         val root = rootProject("banana")
         root.pluginManager.apply(CanonPlugin::class.java)
-        root.pluginManager.apply(VersioningPlugin::class.java)
-        val extension = versioningOf(root) as VersioningExtension
 
         softly
-            .assertThatThrownBy { extension.parsedVersion() }
-            .isInstanceOf(IllegalStateException::class.java)
-            .hasMessageContaining("banana")
+            .assertThatThrownBy { root.pluginManager.apply(VersioningPlugin::class.java) }
+            .isInstanceOf(RuntimeException::class.java)
+            .hasStackTraceContaining("banana")
     }
 
     @Test
-    fun missingVersionFailsWithDedicatedMessage(softly: SoftAssertions) {
+    fun missingVersionFailsFastAtApply(softly: SoftAssertions) {
         val root = rootProject("unspecified")
         root.pluginManager.apply(CanonPlugin::class.java)
-        root.pluginManager.apply(VersioningPlugin::class.java)
-        val extension = versioningOf(root) as VersioningExtension
 
         softly
-            .assertThatThrownBy { extension.parsedVersion() }
-            .isInstanceOf(IllegalStateException::class.java)
-            .hasMessageContaining("has no version set")
+            .assertThatThrownBy { root.pluginManager.apply(VersioningPlugin::class.java) }
+            .isInstanceOf(RuntimeException::class.java)
+            .hasStackTraceContaining("has no version set")
+    }
+
+    private fun semverOf(project: Project): SemverService {
+        val registration =
+            project.gradle.sharedServices.registrations.getByName("canonSemver")
+        return registration.service.get() as SemverService
     }
 
     private fun versioningOf(project: Project): Any? {

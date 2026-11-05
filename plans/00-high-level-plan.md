@@ -105,6 +105,15 @@ configures correctly.
 - Master packaging: how the bundle ships (leaning fat jar with the curated contributors bundled).
   Decided when Chunk 8 makes the consumption story concrete.
 
+## Plugin backlog
+
+* codemeta: create and maintain a codemeta.json file at the repo root.
+* jvm-defaults: toolchain, source/doc jars, test suites configuration
+* publish: maven-publish with correct pom coordinates, tiered artifact routing based on release/pre-release
+* release: auto release flow: test, tag release version, new snapshot, push (needs git/vcs)
+* tbd: per-branch pre-release fragment on produced artifacts to avoid clashes between ci-published artifacts
+* changelog: automatic changelog rolling (needs release for trigger)
+
 ## Review questions for the maintainer
 
 1. Is one reference contributor (`easy.jvm`) enough for Chunks 3–4, or do you want two to prove multi-contributor propagation earlier?

@@ -44,6 +44,7 @@ detekt {
 
 dependencies {
     implementation(project(":plugins:canon-api"))
+    implementation(project(":plugins:canon-semver-service"))
     implementation(libs.semver4j)
 }
 

@@ -12,7 +12,7 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | 4 | Root → child propagation (core-owned copy engine) | `04-extension-propagation.md` | done | L1 + L2 green; engine bugs fixed via L1; full gate green |
 | 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | done | Single-id bundle + propagation green; full gate green |
 | 6 | Third-party contributor interop | `06-third-party-interop.md` | done | Sample coexists + propagates; clash fails fast; full gate green |
-| 7 | Shared build-service APIs (separate artifacts) | `07-shared-build-services.md` | todo | — |
+| 7 | Shared build-service APIs (separate artifacts) | `07-shared-build-services.md` | in progress | Plan approved (D1–D3 settled); pick is `publish` |
 | 8 | Published-artifact linking verification | `08-linking-verification.md` | todo | Depends on test-publish infra from Chunk 1 |
 
 Statuses: `todo` → `in progress` (plan approved, work started) → `done` (acceptance criteria + verification met).
