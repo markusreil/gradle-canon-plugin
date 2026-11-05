@@ -10,6 +10,16 @@ plugins {
     `jvm-test-suite`
     alias(libs.plugins.kotlin.jvm)
     jacoco
+    alias(libs.plugins.spotless)
+}
+
+spotless {
+    kotlin {
+        ktfmt().googleStyle().configure {
+            it.setBlockIndent(4)
+            it.setContinuationIndent(4)
+        }
+    }
 }
 
 group = "com.mreil.canon"

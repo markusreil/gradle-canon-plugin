@@ -35,8 +35,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
      dependencies inside the owning `JvmTestSuite` (`testing { suites { named<JvmTestSuite>(…) { dependencies { … } } } }`).
    - JVM test suites; JUnit 5 + AssertJ soft assertions via the injected `SoftAssertions` extension
      (`@ExtendWith(SoftAssertionsExtension.class)`), not the static `assertSoftly` entry point.
-   - Production sources are Kotlin (`src/main/kotlin`); the Kotlin version is managed in the `libs` catalog.
-     Test sources stay Java unless a test needs Kotlin.
+   - Production and test sources are Kotlin (`src/main/kotlin`, `src/test/kotlin`, …); the Kotlin version is
+     managed in the `libs` catalog. No Java sources anywhere.
    - No external Gradle plugins unless explicitly allowed in the plan.
 7. **Docs are part of done.** Keep these updated in the same change that makes them stale:
    - `README.md` — consumer view: how a build author uses the plugin (installation, `easy {}` DSL, contributors,

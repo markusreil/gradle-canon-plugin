@@ -14,12 +14,15 @@ open class VersioningExtension(private val project: Project) {
 internal fun parseVersion(value: String, projectPath: String): Semver {
     if (value.isBlank() || value == "unspecified") {
         throw IllegalStateException(
-                "Project '$projectPath' has no version set (got '$value'): set a semver version (scheme 'semver')")
+            "Project '$projectPath' has no version set (got '$value'): set a semver version (scheme 'semver')",
+        )
     }
     try {
         return Semver(value)
     } catch (e: SemverException) {
         throw IllegalStateException(
-                "Project '$projectPath' has version '$value' which is not valid semver (scheme 'semver')", e)
+            "Project '$projectPath' has version '$value' which is not valid semver (scheme 'semver')",
+            e,
+        )
     }
 }

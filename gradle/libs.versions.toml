@@ -4,6 +4,7 @@ assertj = "3.27.7"
 kotlin = "2.4.21"
 semver4j = "6.0.0"
 jacoco = "0.8.16"
+spotless = "8.11.0"
 
 [libraries]
 junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
@@ -13,3 +14,4 @@ semver4j = { group = "org.semver4j", name = "semver4j", version.ref = "semver4j"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

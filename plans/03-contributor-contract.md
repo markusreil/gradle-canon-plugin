@@ -86,23 +86,31 @@ whichever comes first) — not before.
    helper with parent-dir creation). Verify: `:plugins:canon-versioning:functionalTest` green.
 - [x] **3.5 Contract doc.** README "Writing a contributor plugin" section (per D7) + CHANGELOG entry under
    Unreleased (`canon.versioning` reference contributor). Verify: prose describes exactly what the tests prove.
-- [ ] **3.6 JaCoCo test coverage.** Apply the core `jacoco` plugin (built-in, no exception needed) in both
+- [x] **3.6 JaCoCo test coverage.** Apply the core `jacoco` plugin (built-in, no exception needed) in both
    modules; tool version `0.8.16` from the catalog; per-module XML + HTML reports, no coverage gates yet
    (no basis for thresholds — deciding numbers now would be fiction). Applies repo-wide to present and future
    modules. Verify: `test` + `functionalTest` produce reports, `./gradlew check` green.
-- [ ] **3.7 Spotless code analysis.** Apply external `com.diffplug.spotless` `8.11.0` via the catalog (explicitly
-   allowed by this step, per the AGENTS.md rule); `palantirJavaFormat` for Java, `ktfmt` for Kotlin; run
-   `spotlessApply` and review the reformatting diff as part of the step. `spotlessCheck` rides with `check`.
-   Applies repo-wide to present and future modules. Verify: `spotlessCheck` green, reformatting reviewed.
-- [ ] **3.8 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules, coverage + spotless
-   included); update `plans/README.md` (Chunk 3 → done). Verify: every suite executed.
-- [ ] **3.9 Chunk 3 retrospective (required before Chunk 4).** Same gate as 1.9/2.7: how did Chunk 3 go,
+- [x] **3.7 Kotlin everywhere + Spotless.** Convert the remaining Java test sources to Kotlin (Java has no
+   place in this codebase); Spotless covers Kotlin only. Apply external `com.diffplug.spotless` `8.11.0` via
+   the catalog (explicitly allowed by this step, per the AGENTS.md rule) with `ktfmt` google style plus
+   4-space block/continuation indent (current ktfmt offers google vs kotlinlang styles — the old Meta style
+   is gone; this matches the 4-space sources and minimizes the first reformatting diff); run `spotlessApply`
+   and review the reformatting
+   diff as part of the step. `spotlessCheck` rides with `check`. Applies repo-wide to present and future
+   modules. Verify: no `src/*/java` dirs remain, `spotlessCheck` green, reformatting reviewed.
+- [ ] **3.8 Detekt static analysis.** Apply external `io.gitlab.arturbosch.detekt` `1.23.8` via the catalog
+   (explicitly allowed by this step, per the AGENTS.md rule); default rule set to start, tune only on concrete
+   noise — no custom rule shopping. `detekt` rides with `check`. Applies repo-wide to present and future
+   modules. Verify: `detekt` green, findings reviewed.
+- [ ] **3.9 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules; coverage, spotless, and
+   detekt included); update `plans/README.md` (Chunk 3 → done). Verify: every suite executed.
+- [ ] **3.10 Chunk 3 retrospective (required before Chunk 4).** Same gate as 1.9/2.7: how did Chunk 3 go,
    approach/rules/conventions changes needed, happy with the testing model? Record outcome, amend `AGENTS.md`
    if needed.
 
 ## Verification
 
-- `./gradlew check` exit 0 with every suite in every module executing, coverage reports produced, `spotlessCheck` green (AC6/3.8).
+- `./gradlew check` exit 0 with every suite in every module executing, coverage reports produced, `spotlessCheck` and `detekt` green (AC6/3.9).
 - L1 matrix covers AC1–AC5; L2 covers id resolution + real-build wiring.
 - Reviewer approval of D1–D7 counts as verification for the contract shape.
 
