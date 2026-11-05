@@ -31,6 +31,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
 6. **Gradle project conventions.**
    - Empty root project; logic lives in subprojects / `plugins/` as designed per plan.
    - `libs` version catalog for all dependencies.
+   - Never use top-level `test*` configurations (`testImplementation`, `testRuntimeOnly`, …). Declare test
+     dependencies inside the owning `JvmTestSuite` (`testing { suites { named<JvmTestSuite>(…) { dependencies { … } } } }`).
    - JVM test suites; JUnit 5 + AssertJ soft assertions.
    - No external Gradle plugins unless explicitly allowed in the plan.
 7. **Docs are part of done.** Keep these updated in the same change that makes them stale:
