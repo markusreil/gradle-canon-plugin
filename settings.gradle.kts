@@ -10,3 +10,4 @@ dependencyResolutionManagement {
 include("plugins:canon-api")
 include("plugins:canon-core")
 include("plugins:canon-versioning")
+include("plugins:canon-master")

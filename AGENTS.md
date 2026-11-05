@@ -35,6 +35,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
      dependencies inside the owning `JvmTestSuite` (`testing { suites { named<JvmTestSuite>(…) { dependencies { … } } } }`).
    - JVM test suites; JUnit 5 + AssertJ soft assertions via the injected `SoftAssertions` extension
      (`@ExtendWith(SoftAssertionsExtension.class)`), not the static `assertSoftly` entry point.
+     Expected failures assert through soft chains too (`softly.assertThatThrownBy { … }`) — no
+     `buildAndFail()` or bare `assertThrows` where a soft chain reads cleaner.
    - Production and test sources are Kotlin (`src/main/kotlin`, `src/test/kotlin`, …); the Kotlin version is
      managed in the `libs` catalog. No Java sources anywhere.
    - No external Gradle plugins unless explicitly allowed in the plan.
@@ -48,7 +50,10 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
    - `plans/` — each chunk has `plans/NN-<slug>.md` with status (`todo` / `in progress` / `done`); the tracker table
      in `plans/README.md` mirrors the current state. Update both when a chunk starts and when it lands.
 8. **Minimal diffs.** Don't refactor unrelated code. Don't add abstractions for hypothetical needs.
-9. **Verification before reporting done.** Diagnostics on changed files, related tests green, and a real-surface check
+9. **Strict over undefined.** Functionality that is deliberately undecided must fail loudly when
+   encountered (descriptive error, tested) — never silently skip, guess, or absorb it. Better a
+   strict failure than undefined behaviour slipping through.
+10. **Verification before reporting done.** Diagnostics on changed files, related tests green, and a real-surface check
    for anything user-visible. A green suite alone never proves consumer-facing behavior works.
 
 ## Repo layout (evolving)

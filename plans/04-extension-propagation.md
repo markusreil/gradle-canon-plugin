@@ -120,9 +120,15 @@ project except root:
    exactly what the tests prove.
 - [x] **4.7 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update `plans/README.md`
    (Chunk 4 → done). Verify: every suite executed.
-8. **4.8 Chunk 4 retrospective (required before Chunk 5).** Same gate as before, plus: record the final
+- [x] **4.8 Chunk 4 retrospective (required before Chunk 5).** Same gate as before, plus: final
    answers to review Q2/Q3 as built (convention-mapping behavior, strictness evidence — what threw, what was
-   added to the table). Record outcome, amend `AGENTS.md` if needed.
+   added to the table). Record outcome: process stands; one AGENTS.md amendment (soft-chain assertion style).
+  Q2 as built: parent value becomes child convention, snapshot at copy time, absent root value skips.
+  Q3 as built: unknown unannotated types throw, explicit DEEP is rejected, and immutable drift fails
+  the build naming project plus property plus root value; nothing was added to the type table.
+  Lessons banked: L1 on real decorated holders catches what test-doubles cannot. The engine now walks
+  the class hierarchy and the participation gate requires exact unmangled accessors. New detekt rules
+  get a negative test before trusting green.
 
 ## Verification
 
