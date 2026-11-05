@@ -38,7 +38,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
      Expected failures assert through soft chains too (`softly.assertThatThrownBy { … }`) — no
      `buildAndFail()` or bare `assertThrows` where a soft chain reads cleaner.
    - Production and test sources are Kotlin (`src/main/kotlin`, `src/test/kotlin`, …); the Kotlin version is
-     managed in the `libs` catalog. No Java sources anywhere.
+     managed in the `libs` catalog. No Java sources anywhere. KDoc precedes annotations and modifiers
+     (never sandwiched between them).
    - No external Gradle plugins unless explicitly allowed in the plan.
    - Test suites may depend on sibling modules to set up fixtures (e.g. applying another plugin under test);
      shipped artifacts stay decoupled — the dependency lives in the `testing { suites { … } }` block, never in
