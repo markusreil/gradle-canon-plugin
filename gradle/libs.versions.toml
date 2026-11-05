@@ -3,6 +3,7 @@ junit = "5.14.4"
 assertj = "3.27.7"
 kotlin = "2.4.21"
 semver4j = "6.0.0"
+jacoco = "0.8.16"
 
 [libraries]
 junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }

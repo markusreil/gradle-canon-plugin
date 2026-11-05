@@ -1,11 +1,14 @@
 import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
+import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
+import org.gradle.testing.jacoco.tasks.JacocoReport
 
 plugins {
     `java-gradle-plugin`
     `jvm-test-suite`
     alias(libs.plugins.kotlin.jvm)
+    jacoco
 }
 
 kotlin {
@@ -58,6 +61,27 @@ sourceSets {
     }
 }
 
+tasks.register<JacocoReport>("functionalTestReport") {
+    dependsOn("functionalTest")
+    sourceSets(sourceSets.named("main").get())
+    executionData.setFrom(
+            tasks.named("functionalTest").map {
+                it.extensions.getByType(JacocoTaskExtension::class.java).destinationFile
+            })
+}
+
 tasks.named("check") {
     dependsOn("functionalTest")
+    dependsOn(tasks.withType<JacocoReport>())
+}
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
 }
