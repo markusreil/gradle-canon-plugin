@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     jacoco
     alias(libs.plugins.spotless)
+    alias(libs.plugins.detekt)
 }
 
 spotless {

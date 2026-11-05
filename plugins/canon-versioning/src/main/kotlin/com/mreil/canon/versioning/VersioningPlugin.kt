@@ -17,15 +17,17 @@ class VersioningPlugin : Plugin<Project> {
     private fun register(project: Project) {
         val canon =
             project.extensions.findByName("canon") as? ExtensionAware
-                ?: throw IllegalStateException(
-                    "com.mreil.canon.versioning requires 'canon': apply com.mreil.canon.core (or the canon bundle) before com.mreil.canon.versioning",
+                ?: error(
+                    "com.mreil.canon.versioning requires 'canon': apply com.mreil.canon.core " +
+                        "(or the canon bundle) before com.mreil.canon.versioning",
                 )
         when (val existing = canon.extensions.findByName("versioning")) {
             null -> canon.extensions.create("versioning", VersioningExtension::class.java, project)
             is VersioningExtension -> Unit
             else ->
-                throw IllegalStateException(
-                    "canon already has a 'versioning' contributor — two contributors claim the same name (existing: ${existing.javaClass.name})",
+                error(
+                    "canon already has a 'versioning' contributor — two contributors claim the same name " +
+                        "(existing: ${existing.javaClass.name})",
                 )
         }
     }

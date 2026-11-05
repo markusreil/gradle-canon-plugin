@@ -98,7 +98,7 @@ whichever comes first) — not before.
    and review the reformatting
    diff as part of the step. `spotlessCheck` rides with `check`. Applies repo-wide to present and future
    modules. Verify: no `src/*/java` dirs remain, `spotlessCheck` green, reformatting reviewed.
-- [ ] **3.8 Detekt static analysis.** Apply external `io.gitlab.arturbosch.detekt` `1.23.8` via the catalog
+- [x] **3.8 Detekt static analysis.** Apply external `io.gitlab.arturbosch.detekt` `1.23.8` via the catalog
    (explicitly allowed by this step, per the AGENTS.md rule); default rule set to start, tune only on concrete
    noise — no custom rule shopping. `detekt` rides with `check`. Applies repo-wide to present and future
    modules. Verify: `detekt` green, findings reviewed.
