@@ -26,6 +26,10 @@ kotlin {
     jvmToolchain(17)
 }
 
+detekt {
+    config.setFrom(rootProject.file("config/detekt.yml"))
+}
+
 dependencies {
     implementation(project(":plugins:canon-api"))
 }

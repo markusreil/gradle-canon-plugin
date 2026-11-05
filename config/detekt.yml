@@ -1,0 +1,13 @@
+# Minimal detekt config: detekt defaults plus KDoc enforcement on public main-source API.
+# Test sources stay exempt via the rules' built-in excludes — no KDoc required in tests.
+
+comments:
+  UndocumentedPublicClass:
+    active: true
+    excludes: ['**/src/test/**', '**/src/functionalTest/**']
+  UndocumentedPublicFunction:
+    active: true
+    excludes: ['**/src/test/**', '**/src/functionalTest/**']
+  UndocumentedPublicProperty:
+    active: true
+    excludes: ['**/src/test/**', '**/src/functionalTest/**']

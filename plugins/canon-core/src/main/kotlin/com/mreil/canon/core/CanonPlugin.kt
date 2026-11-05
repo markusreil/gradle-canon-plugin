@@ -3,6 +3,7 @@ package com.mreil.canon.core
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+/** Registers the `canon` extension container on all projects and hooks up propagation. */
 class CanonPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {

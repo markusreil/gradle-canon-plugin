@@ -118,7 +118,7 @@ project except root:
 - [x] **4.6 Contract + propagation docs.** README contributor section gains the annotation + type-table rule;
    propagation paragraph rewritten to implemented reality (per D7) + CHANGELOG entry. Verify: prose describes
    exactly what the tests prove.
-7. **4.7 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update `plans/README.md`
+- [x] **4.7 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update `plans/README.md`
    (Chunk 4 → done). Verify: every suite executed.
 8. **4.8 Chunk 4 retrospective (required before Chunk 5).** Same gate as before, plus: record the final
    answers to review Q2/Q3 as built (convention-mapping behavior, strictness evidence — what threw, what was

@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 
+/** Registers the `versioning` contributor under `canon` on all projects. */
 class VersioningPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {

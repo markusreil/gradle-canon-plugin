@@ -237,8 +237,11 @@ object CanonPropagation {
  * @property read re-reads the child's current value.
  */
 class RecordedCopy(
+    /** Path of the child project the copy went to. */
     val projectPath: String,
+    /** Name of the sub-extension the field belongs to. */
     val extensionName: String,
+    /** Name of the copied field. */
     val propertyName: String,
     val expected: Any?,
     val read: () -> Any?,
