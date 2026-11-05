@@ -22,6 +22,10 @@ kotlin {
     jvmToolchain(17)
 }
 
+dependencies {
+    implementation(libs.semver4j)
+}
+
 testing {
     suites {
         named<JvmTestSuite>("test") {
