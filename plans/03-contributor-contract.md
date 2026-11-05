@@ -84,7 +84,7 @@ whichever comes first) — not before.
    Verify: `:plugins:canon-versioning:test` green.
 - [ ] **3.4 L2 proof.** `GradleRunner` test per the layering section (inline Kotlin-DSL strings, private `write`
    helper with parent-dir creation). Verify: `:plugins:canon-versioning:functionalTest` green.
-- [ ] **3.5 Contract doc.** README "Writing a contributor plugin" section (per D7) + CHANGELOG entry under
+- [x] **3.5 Contract doc.** README "Writing a contributor plugin" section (per D7) + CHANGELOG entry under
    Unreleased (`canon.versioning` reference contributor). Verify: prose describes exactly what the tests prove.
 - [ ] **3.6 JaCoCo test coverage.** Apply the core `jacoco` plugin (built-in, no exception needed) in both
    modules; tool version `0.8.16` from the catalog; per-module XML + HTML reports, no coverage gates yet

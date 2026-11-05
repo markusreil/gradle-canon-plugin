@@ -15,3 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   model, `ProjectBuilder`-first testing, docs-as-done).
 - `README.md` consumer-facing vision of the plugin (target DSL, master/contributor model, roadmap).
 - `plans/` tracker and high-level plan (`00-high-level-plan.md`) ordering the build into 8 chunks.
+- Core plugin `com.mreil.canon.core`: `canon` extension container registered on all projects.
+- Reference contributor `com.mreil.canon.versioning`: `canon.versioning` sub-extension managing versioning
+  schemes (default `semver`, version parsed from the root project's version via semver4j); establishes the
+  contributor contract (require `canon`, fail fast otherwise, idempotent re-apply, unique names).
