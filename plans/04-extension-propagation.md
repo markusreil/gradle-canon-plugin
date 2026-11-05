@@ -109,9 +109,11 @@ project except root:
 - [x] **4.3 Contributor adopts.** `scheme` gets explicit `@Propagate(IMMUTABLE)`; versioning's compile dependency
    stays api-only. As built: plain `@Propagate` with no use-site target compiles on a Kotlin `var`
    (annotation lands on the backing field). Verify: compiles.
-4. **4.4 L1 proof.** `ProjectBuilder` matrix for AC1–AC5 incl. the table test-double (injected `SoftAssertions`,
-   in-suite deps). Verify: `:plugins:canon-core:test` and `:plugins:canon-versioning:test` green.
-5. **4.5 L2 proof.** Two `GradleRunner` multi-project tests (inherit-guard green + override-fails).
+- [x] **4.4 L1 proof.** `ProjectBuilder` matrix for AC1–AC5 incl. the table test-double (injected `SoftAssertions`,
+   in-suite deps). As built: engine matrix in `CanonPropagationTest` plus `VersioningPropagationTest`
+  (inherited scheme, drift record, `parsedVersion` vs child version); the L1 run caught and fixed two
+  engine bugs (decorated-subclass hierarchy walk, internal-visibility gate). Verify: `:plugins:canon-core:test` and `:plugins:canon-versioning:test` green.
+- [x] **4.5 L2 proof.** Two `GradleRunner` multi-project tests (inherit-guard green + override-fails).
    Verify: `:plugins:canon-versioning:functionalTest` green.
 6. **4.6 Contract + propagation docs.** README contributor section gains the annotation + type-table rule;
    propagation paragraph rewritten to implemented reality (per D7) + CHANGELOG entry. Verify: prose describes

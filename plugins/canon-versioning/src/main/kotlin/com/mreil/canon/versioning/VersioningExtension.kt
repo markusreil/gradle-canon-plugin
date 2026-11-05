@@ -11,8 +11,7 @@ import org.semver4j.Semver
 open class VersioningExtension @Inject constructor(objects: ObjectFactory) {
 
     @Propagate(CopySemantics.IMMUTABLE)
-    val scheme: Property<String> =
-        objects.property(String::class.java).convention("semver")
+    val scheme: Property<String> = objects.property(String::class.java).convention("semver")
 
     internal lateinit var project: Project
 

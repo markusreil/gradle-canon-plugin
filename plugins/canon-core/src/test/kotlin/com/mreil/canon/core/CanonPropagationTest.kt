@@ -51,8 +51,7 @@ class CanonPropagationTest {
     }
 
     open class PlainProps {
-        @field:Propagate(CopySemantics.SHALLOW)
-        var plain: String = ""
+        @field:Propagate(CopySemantics.SHALLOW) var plain: String = ""
     }
 
     open class UninferredProps {
@@ -61,6 +60,12 @@ class CanonPropagationTest {
 
     open class HiddenProps {
         private var hidden: String = "root-hidden"
+
+        fun peek(): String = hidden
+
+        fun poke(value: String) {
+            hidden = value
+        }
     }
 
     @Test
@@ -117,7 +122,11 @@ class CanonPropagationTest {
         val failure =
             assertThrows<IllegalStateException> {
                 CanonPropagation.copyExtension(
-                    "fixture", source, dest, destProject(), mutableListOf()
+                    "fixture",
+                    source,
+                    dest,
+                    destProject(),
+                    mutableListOf(),
                 )
             }
 
@@ -132,7 +141,11 @@ class CanonPropagationTest {
         val failure =
             assertThrows<IllegalStateException> {
                 CanonPropagation.copyExtension(
-                    "fixture", source, dest, destProject(), mutableListOf()
+                    "fixture",
+                    source,
+                    dest,
+                    destProject(),
+                    mutableListOf(),
                 )
             }
 
@@ -147,7 +160,11 @@ class CanonPropagationTest {
         val failure =
             assertThrows<IllegalStateException> {
                 CanonPropagation.copyExtension(
-                    "fixture", source, dest, destProject(), mutableListOf()
+                    "fixture",
+                    source,
+                    dest,
+                    destProject(),
+                    mutableListOf(),
                 )
             }
 
@@ -174,7 +191,11 @@ class CanonPropagationTest {
         val failure =
             assertThrows<IllegalStateException> {
                 CanonPropagation.copyExtension(
-                    "fixture", source, dest, destProject(), mutableListOf()
+                    "fixture",
+                    source,
+                    dest,
+                    destProject(),
+                    mutableListOf(),
                 )
             }
 
@@ -184,12 +205,12 @@ class CanonPropagationTest {
     @Test
     fun privateFieldWithoutGetterIsSkipped(softly: SoftAssertions) {
         val (source, dest) = pairOf { HiddenProps() }
-        writeHidden(source, "changed-after-construction")
+        source.poke("changed-after-construction")
 
         CanonPropagation.copyExtension("fixture", source, dest, destProject(), mutableListOf())
 
-        softly.assertThat(readHidden(source)).isEqualTo("changed-after-construction")
-        softly.assertThat(readHidden(dest)).isEqualTo("root-hidden")
+        softly.assertThat(source.peek()).isEqualTo("changed-after-construction")
+        softly.assertThat(dest.peek()).isEqualTo("root-hidden")
     }
 
     @Test
@@ -197,15 +218,18 @@ class CanonPropagationTest {
         val source = ShallowProps(rootProject().objects)
         val dest =
             object {
-                @field:Propagate(CopySemantics.SHALLOW)
-                var shallow: String = ""
+                @field:Propagate(CopySemantics.SHALLOW) var shallow: String = ""
             }
         source.shallow.set("root-value")
 
         val failure =
             assertThrows<IllegalStateException> {
                 CanonPropagation.copyExtension(
-                    "fixture", source, dest, destProject(), mutableListOf()
+                    "fixture",
+                    source,
+                    dest,
+                    destProject(),
+                    mutableListOf(),
                 )
             }
 
@@ -239,18 +263,6 @@ class CanonPropagationTest {
 
     private fun subExtensionsOf(project: Project): ExtensionContainer =
         (project.extensions.findByName("canon") as ExtensionAware).extensions
-
-    private fun readHidden(instance: Any): String {
-        val field = instance.javaClass.getDeclaredField("hidden")
-        field.isAccessible = true
-        return field.get(instance) as String
-    }
-
-    private fun writeHidden(instance: Any, value: String) {
-        val field = instance.javaClass.getDeclaredField("hidden")
-        field.isAccessible = true
-        field.set(instance, value)
-    }
 
     private fun rootProject(): Project = ProjectBuilder.builder().withProjectDir(projectDir).build()
 

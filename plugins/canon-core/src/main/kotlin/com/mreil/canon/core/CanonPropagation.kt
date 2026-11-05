@@ -15,30 +15,31 @@ import org.gradle.api.provider.SetProperty
  * Copies `easy`/`canon` sub-extension values from the root project down to every child project.
  *
  * Only genuine contributor sub-extensions are visited: the container itself and Gradle-owned
- * extensions (anything under `org.gradle.*`, e.g. `ext`) are skipped. Within each sub-extension,
- * a field participates when it carries [Propagate], or — without the annotation — when it is
- * public or exposes a public `getX`/`isX` getter. Static and synthetic fields are ignored.
+ * extensions (anything under `org.gradle.*`, e.g. `ext`) are skipped. Within each sub-extension, a
+ * field participates when it carries [Propagate], or — without the annotation — when it is
+ * genuinely public: an exact public `getX`/`isX` accessor, or a public field with no name-mangled
+ * (Kotlin-internal) accessor. Static and synthetic fields are ignored.
  *
  * Supported field types today:
  *
  * - `Property<T>` — fully supported. [CopySemantics.SHALLOW] sets the child's value as a
- *   [convention][org.gradle.api.provider.Property.convention] of the root value, but only when
- *   the root value is present; an absent root value leaves the child untouched. Fields of this
- *   type default to SHALLOW when the annotation is absent.
+ *   [convention][org.gradle.api.provider.Property.convention] of the root value, but only when the
+ *   root value is present; an absent root value leaves the child untouched. Fields of this type
+ *   default to SHALLOW when the annotation is absent.
  * - `ListProperty`, `SetProperty`, `MapProperty` — not copyable yet. They infer
- *   [CopySemantics.DEEP], which currently fails with a descriptive error, and an explicit
- *   SHALLOW on them fails the same way; mark them DEEP (or handle them manually) and they will
- *   start working once the deep-merge chunk lands.
+ *   [CopySemantics.DEEP], which currently fails with a descriptive error, and an explicit SHALLOW
+ *   on them fails the same way; mark them DEEP (or handle them manually) and they will start
+ *   working once the deep-merge chunk lands.
  * - Plain mutable (`var`) fields of any other type — copied by reference assignment. An explicit
  *   [Propagate] mode is required since no default can be inferred; annotating such a field
  *   [CopySemantics.DEEP] fails until deep copy is implemented.
  * - Anything else (notably `val`/`final` fields holding non-provider values) — rejected with an
  *   error telling the contributor to annotate explicitly or switch to a supported type.
  *
- * [CopySemantics.IMMUTABLE] behaves exactly like SHALLOW at copy time and additionally records
- * the copied value; once all projects are evaluated the recorded value is re-read and any drift
- * fails the build, so children cannot override it. Source and target field types must match,
- * otherwise the copy fails with an error.
+ * [CopySemantics.IMMUTABLE] behaves exactly like SHALLOW at copy time and additionally records the
+ * copied value; once all projects are evaluated the recorded value is re-read and any drift fails
+ * the build, so children cannot override it. Source and target field types must match, otherwise
+ * the copy fails with an error.
  *
  * Timing: the copy runs in `afterEvaluate` on the root project; the immutability check runs in
  * `projectsEvaluated`.
@@ -102,12 +103,19 @@ object CanonPropagation {
         pending: MutableList<RecordedCopy>,
     ) {
         val scope = CopyScope(extensionName, source, dest, target, pending)
-        for (field in scope.source.javaClass.declaredFields) {
+        // Walk the hierarchy: holders registered via `extensions.create` are Gradle-decorated
+        // subclasses, so contributor-declared fields live on a superclass.
+        for (field in fieldsOf(scope.source.javaClass)) {
             if (!Modifier.isStatic(field.modifiers) && !field.isSynthetic) {
                 copyField(field, scope)
             }
         }
     }
+
+    private fun fieldsOf(type: Class<*>): Sequence<Field> =
+        generateSequence(type) { it.superclass }
+            .takeWhile { it != Any::class.java }
+            .flatMap { it.declaredFields.asSequence() }
 
     private fun isGenuineSubExtension(name: String, source: Any, root: Project): Boolean {
         // The schema can surface project-scope extensions (e.g. `canon` itself); only genuine
@@ -126,10 +134,14 @@ object CanonPropagation {
     )
 
     private fun copyField(field: Field, scope: CopyScope) {
-        val mode = resolveMode(field, scope.source) ?: return
+        val mode =
+            field.getAnnotation(Propagate::class.java)?.value
+                ?: if (isPropagatable(field, scope.source)) inferFromType(field) else return
         field.isAccessible = true
         val destField =
-            scope.dest.javaClass.getDeclaredField(field.name).also { it.isAccessible = true }
+            fieldsOf(scope.dest.javaClass).firstOrNull { it.name == field.name }
+                ?: throw NoSuchFieldException(field.name)
+        destField.isAccessible = true
         when (mode) {
             CopySemantics.SHALLOW -> applyShallow(field, destField, scope)
             CopySemantics.IMMUTABLE -> {
@@ -144,17 +156,17 @@ object CanonPropagation {
         }
     }
 
-    private fun resolveMode(field: Field, instance: Any): CopySemantics? =
-        field.getAnnotation(Propagate::class.java)?.value
-            ?: if (isPropagatable(field, instance)) inferFromType(field) else null
-
     private fun isPropagatable(field: Field, instance: Any): Boolean {
-        if (Modifier.isPublic(field.modifiers)) return true
         val capitalized = field.name.replaceFirstChar(Char::uppercaseChar)
-        return instance.javaClass.methods
-            .filter { Modifier.isPublic(it.modifiers) && it.parameterCount == 0 }
-            .map { it.name }
-            .any { it == "get$capitalized" || it == "is$capitalized" }
+        val accessors =
+            instance.javaClass.methods
+                .filter { Modifier.isPublic(it.modifiers) && it.parameterCount == 0 }
+                .map { it.name }
+        val exact = accessors.any { it == "get$capitalized" || it == "is$capitalized" }
+        val mangled = accessors.any {
+            it.startsWith("get$capitalized\$") || it.startsWith("is$capitalized\$")
+        }
+        return exact || (Modifier.isPublic(field.modifiers) && !mangled)
     }
 
     private fun inferFromType(field: Field): CopySemantics {

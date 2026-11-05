@@ -11,6 +11,7 @@ import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.UnexpectedBuildFailure
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
@@ -61,6 +62,110 @@ class CanonVersioningFunctionalTest {
                 .build()
 
         softly.assertThat(result.output).contains("BUILD SUCCESSFUL")
+    }
+
+    @Test
+    fun inheritedSchemeGuardsGreen(softly: SoftAssertions) {
+        write(
+            "settings.gradle.kts",
+            """
+            rootProject.name = "canon-inherit-guard"
+            include("child")
+            """
+                .trimIndent(),
+        )
+        write(
+            "build.gradle.kts",
+            """
+            plugins {
+                id("com.mreil.canon.core")
+                id("com.mreil.canon.versioning")
+            }
+
+            version = "1.2.3"
+
+            canon {
+                versioning {
+                    scheme.set("custom")
+                }
+            }
+            """
+                .trimIndent(),
+        )
+        write(
+            "child/build.gradle.kts",
+            """
+            canon {
+                versioning {
+                    require(scheme.get() == "custom") { "expected inherited scheme, got ${'$'}{scheme.get()}" }
+                }
+            }
+            """
+                .trimIndent(),
+        )
+
+        val result: BuildResult =
+            GradleRunner.create()
+                .withProjectDir(projectDir.toFile())
+                .withPluginClasspath(pluginClasspath())
+                .withArguments("help")
+                .build()
+
+        softly.assertThat(result.output).contains("BUILD SUCCESSFUL")
+    }
+
+    @Test
+    fun overriddenSchemeFailsBuild(softly: SoftAssertions) {
+        write(
+            "settings.gradle.kts",
+            """
+            rootProject.name = "canon-override-fails"
+            include("child")
+            """
+                .trimIndent(),
+        )
+        write(
+            "build.gradle.kts",
+            """
+            plugins {
+                id("com.mreil.canon.core")
+                id("com.mreil.canon.versioning")
+            }
+
+            version = "1.2.3"
+
+            canon {
+                versioning {
+                    scheme.set("custom")
+                }
+            }
+            """
+                .trimIndent(),
+        )
+        write(
+            "child/build.gradle.kts",
+            """
+            canon {
+                versioning {
+                    scheme.set("evil")
+                }
+            }
+            """
+                .trimIndent(),
+        )
+
+        softly
+            .assertThatThrownBy {
+                GradleRunner.create()
+                    .withProjectDir(projectDir.toFile())
+                    .withPluginClasspath(pluginClasspath())
+                    .withArguments("help")
+                    .build()
+            }
+            .isInstanceOf(UnexpectedBuildFailure::class.java)
+            .hasMessageContaining(":child")
+            .hasMessageContaining("versioning.scheme")
+            .hasMessageContaining("custom")
     }
 
     private fun pluginClasspath(): List<File> {
