@@ -7,4 +7,5 @@ dependencyResolutionManagement {
     }
 }
 
-include("plugins:easy-core")
+include("plugins:canon-core")
+include("plugins:canon-versioning")
