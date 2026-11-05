@@ -1,4 +1,4 @@
-package easy.core;
+package com.mreil.canon.core;
 
 import java.nio.file.Path;
 import org.assertj.core.api.SoftAssertions;

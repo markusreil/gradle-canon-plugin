@@ -1,4 +1,4 @@
-package easy.core;
+package com.mreil.canon.core;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

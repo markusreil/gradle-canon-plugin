@@ -7,6 +7,17 @@ plugins {
     `jvm-test-suite`
 }
 
+group = "com.mreil.canon"
+
+gradlePlugin {
+    plugins {
+        create("canonCore") {
+            id = "com.mreil.canon.core"
+            implementationClass = "com.mreil.canon.core.CanonPlugin"
+        }
+    }
+}
+
 testing {
     suites {
         named<JvmTestSuite>("test") {
