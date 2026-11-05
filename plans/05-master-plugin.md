@@ -87,7 +87,7 @@ Notes on the shape:
    dependencies on both. Verify: compiles.
 - [x] **5.2 L1 proof.** `ProjectBuilder` matrix for AC1–AC2 (presence on root/child, propagation through the
    bundle). Verify: `:plugins:canon-master:test` green (in-suite dep on core + versioning for fixtures).
-3. **5.3 L2 proof.** One `GradleRunner` test applying only the master id (inherit-guard green). Verify:
+- [x] **5.3 L2 proof.** One `GradleRunner` test applying only the master id (inherit-guard green). Verify:
    `:plugins:canon-master:functionalTest` green.
 4. **5.4 Docs.** README master section rewritten to implemented reality (id, fixed bundle, lockstep) +
    CHANGELOG entry. Verify: prose describes exactly what the tests prove.
