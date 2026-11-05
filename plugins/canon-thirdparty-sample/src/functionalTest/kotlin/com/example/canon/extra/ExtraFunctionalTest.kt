@@ -15,9 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
-/**
- * Master plus sample on a real build: both namespaces resolve, foreign values propagate.
- */
+/** Master plus sample on a real build: both namespaces resolve, foreign values propagate. */
 @ExtendWith(SoftAssertionsExtension::class)
 class ExtraFunctionalTest {
 

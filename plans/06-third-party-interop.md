@@ -88,9 +88,9 @@ Notes on the shape:
    `:plugins:canon-thirdparty-sample:functionalTest` green.
 - [x] **6.4 Docs.** README third-party paragraph rewritten to implemented reality + CHANGELOG entry.
    Verify: prose describes exactly what the tests prove.
-5. **6.5 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update
+- [x] **6.5 Full gate.** `./gradlew check --rerun-tasks` green (all suites, all modules); update
    `plans/README.md` (Chunk 6 → done). Verify: every suite executed.
-6. **6.6 Chunk 6 retrospective (required before Chunk 7).** Record outcome, amend `AGENTS.md` if needed.
+- [x] **6.6 Chunk 6 retrospective (required before Chunk 7).** Outcome: nothing beyond the ordering discussion, already captured as D5 (fail fast, author-owned order).
 
 ## Verification
 
