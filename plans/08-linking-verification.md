@@ -72,7 +72,7 @@ after check), keeping `check` offline-friendly per the Chunk 1 agreement.
 
 - [x] **8.1 Publish wiring.** `maven-publish` on all modules (publications configured in-module) +
    conditional test repo from `-PtestRepoUrl`. Verify: repo contains every jar + marker.
-2. **8.2 Linking module + tests.** `linking/` module, `linkingTest` suite proving AC2–AC3.
+- [x] **8.2 Linking module + tests.** `linking/` module, `linkingTest` suite proving AC2–AC3.
    Verify: `linkingTest` green (runs `testPublish` first).
 3. **8.3 Docs.** README release-path paragraph + CHANGELOG entry describing exactly what the suite
    proves. Verify: prose matches tests.
