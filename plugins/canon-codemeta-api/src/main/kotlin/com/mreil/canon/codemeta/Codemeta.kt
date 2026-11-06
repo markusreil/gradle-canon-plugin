@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * A person or organization in a codemeta role. Object form only for now; plain-string
- * forms some tools accept are not supported yet.
+ * A person or organization in a codemeta role. Object form only for now; plain-string forms some
+ * tools accept are not supported yet.
  */
 @Serializable
 data class CodemetaPerson(
@@ -23,8 +23,8 @@ data class CodemetaPerson(
 
 /**
  * The `codemeta.json` file model: the complete CodeMeta v2/v3 term set. Each property is marked
- * needed (a consumer exists in this repo's arc) or not needed (kept for spec completeness so we
- * can review the list together and promote fields deliberately).
+ * needed (a consumer exists in this repo's arc) or not needed (kept for spec completeness so we can
+ * review the list together and promote fields deliberately).
  */
 @Serializable
 data class Codemeta(
@@ -37,7 +37,10 @@ data class Codemeta(
     val name: String,
     /** What the software does. Needed: POM description, jReleaser announcements. */
     val description: String,
-    /** Version of the described software. Needed for file completeness; the build version stays Gradle-owned. */
+    /**
+     * Version of the described software. Needed for file completeness; the build version stays
+     * Gradle-owned.
+     */
     val version: String? = null,
     /** Authors. Needed: POM developers, jReleaser authors. */
     val author: List<CodemetaPerson> = emptyList(),
@@ -54,15 +57,35 @@ data class Codemeta(
 
     /** Copyright holder. Needed: POM organization once we publish under one. */
     val copyrightHolder: List<CodemetaPerson> = emptyList(),
+    /** Inception year. Needed: jReleaser project block. */
+    val inceptionYear: String? = null,
+    /**
+     * Copyright notice. Maybe: announcements could use it; neither POM nor jReleaser require it.
+     */
+    val copyright: String? = null,
+    /** Vendor. Not needed: no consumer; free-form extra at best. */
+    val vendor: String? = null,
+    /** Long description. Needed: jReleaser announcements fall back to it. */
+    val longDescription: String? = null,
+    /** Named links (homepage, documentation, bugTracker, ...). Needed: jReleaser links. */
+    val links: Map<String, String>? = null,
     /** First publication date. Needed: changelog automation will key off dates. */
     val datePublished: String? = null,
-    /** Secondary contributors. Maybe: authors cover POM now; promote if a contributor needs credit. */
+    /**
+     * Secondary contributors. Maybe: authors cover POM now; promote if a contributor needs credit.
+     */
     val contributor: List<CodemetaPerson> = emptyList(),
     /** What changed in this version. Maybe: changelog automation is the natural consumer. */
     val releaseNotes: String? = null,
-    /** Runtime or interpreter dependencies (e.g. Java 17). Maybe: useful once contributors declare toolchains. */
+    /**
+     * Runtime or interpreter dependencies (e.g. Java 17). Maybe: useful once contributors declare
+     * toolchains.
+     */
     val runtimePlatform: List<String> = emptyList(),
-    /** Maintainer (common extension, not a spec term). Maybe: POM developers may want a separate contact. */
+    /**
+     * Maintainer (common extension, not a spec term). Maybe: POM developers may want a separate
+     * contact.
+     */
     val maintainer: List<CodemetaPerson> = emptyList(),
 
     /** Type of application (e.g. Game). Not needed: we build build-logic, not end-user apps. */
@@ -135,6 +158,9 @@ data class Codemeta(
     val dateModified: String? = null,
     /** Copyright year. Not needed: license files carry this. */
     val copyrightYear: String? = null,
-    /** Version as embodied by a resource (alias-ish twin of version). Not needed: one version field is enough. */
+    /**
+     * Version as embodied by a resource (alias-ish twin of version). Not needed: one version field
+     * is enough.
+     */
     val softwareVersion: String? = null,
 )

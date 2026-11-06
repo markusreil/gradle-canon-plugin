@@ -5,9 +5,7 @@ import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-/**
- * Codemeta parsing: fields land, unknown keys are ignored, garbage fails.
- */
+/** Codemeta parsing: fields land, unknown keys are ignored, garbage fails. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CodemetaTest {
 
@@ -28,7 +26,8 @@ class CodemetaTest {
                   "programmingLanguage": ["Kotlin"],
                   "url": "https://example.com"
                 }
-                """.trimIndent(),
+                """
+                    .trimIndent(),
             )
 
         softly.assertThat(parsed.name).isEqualTo("canon")
@@ -45,6 +44,18 @@ class CodemetaTest {
             )
 
         softly.assertThat(parsed.name).isEqualTo("canon")
+    }
+
+    @Test
+    fun defaultPrefillsProjectModel(softly: SoftAssertions) {
+        val parsed = parseCodemeta(defaultCodemeta("my-proj", null, "unspecified"))
+
+        softly.assertThat(parsed.name).isEqualTo("my-proj")
+        softly.assertThat(parsed.description).contains("TODO")
+        softly.assertThat(parsed.version).isNull()
+        softly.assertThat(parsed.license).contains("SPDX")
+        softly.assertThat(parsed.links?.get("homepage")).isEqualTo("TODO")
+        softly.assertThat(parsed.inceptionYear).isEqualTo(java.time.Year.now().toString())
     }
 
     @Test
