@@ -76,7 +76,7 @@ fail-fast ordering, one public API per plugin (`canon-<name>-api`), service patt
    Verify: `:plugins:canon-codemeta:functionalTest` green.
 - [x] **2.5 Docs.** README/CONTRIBUTING/CHANGELOG touch-ups describing exactly what the tests prove.
    Verify: prose matches tests.
-6. **2.6 Full gate.** `./gradlew check --rerun-tasks` green; update high-level plan (Chunk 2 → done).
+- [x] **2.6 Full gate.** `./gradlew check --rerun-tasks` green; update high-level plan (Chunk 2 → done).
    Verify: every suite executed.
 7. **2.7 Chunk 2 retrospective.** Record outcome, amend `AGENTS.md` if needed.
 

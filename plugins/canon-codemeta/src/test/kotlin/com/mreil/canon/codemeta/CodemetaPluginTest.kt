@@ -1,6 +1,5 @@
 package com.mreil.canon.codemeta
 
-import com.mreil.canon.codemeta.CodemetaService
 import com.mreil.canon.core.CanonPlugin
 import java.io.File
 import org.assertj.core.api.SoftAssertions
@@ -12,9 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
-/**
- * Codemeta plugin: holder, service wiring, init gating.
- */
+/** Codemeta plugin: holder, service wiring, init gating. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CodemetaPluginTest {
 
@@ -77,8 +74,7 @@ class CodemetaPluginTest {
     }
 
     private fun semverOf(project: Project): CodemetaService {
-        val registration =
-            project.gradle.sharedServices.registrations.getByName("canonCodemeta")
+        val registration = project.gradle.sharedServices.registrations.getByName("canonCodemeta")
         return registration.service.get() as CodemetaService
     }
 

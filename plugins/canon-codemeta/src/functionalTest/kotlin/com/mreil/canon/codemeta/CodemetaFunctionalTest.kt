@@ -16,9 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
-/**
- * Real-build codemeta: init creates then fails, present file builds green.
- */
+/** Real-build codemeta: init creates then fails, present file builds green. */
 @ExtendWith(SoftAssertionsExtension::class)
 class CodemetaFunctionalTest {
 
