@@ -74,7 +74,7 @@ after check), keeping `check` offline-friendly per the Chunk 1 agreement.
    conditional test repo from `-PtestRepoUrl`. Verify: repo contains every jar + marker.
 - [x] **8.2 Linking module + tests.** `linking/` module, `linkingTest` suite proving AC2–AC3.
    Verify: `linkingTest` green (runs `testPublish` first).
-3. **8.3 Docs.** README release-path paragraph + CHANGELOG entry describing exactly what the suite
+- [x] **8.3 Docs.** README release-path paragraph + CHANGELOG entry describing exactly what the suite
    proves. Verify: prose matches tests.
 4. **8.4 Full gate.** `./gradlew check --rerun-tasks` green *plus* `linkingTest` green in documented
    order; update `plans/README.md` (Chunk 8 → done). Verify: every suite executed.

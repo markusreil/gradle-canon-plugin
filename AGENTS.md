@@ -49,8 +49,9 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
    - Read extension state late: `afterEvaluate` is acceptable for ensuring up-to-date properties; almost
      all other cases should use live collections, `on*Added`, etc.
 7. **Docs are part of done.** Keep these updated in the same change that makes them stale:
-   - `README.md` — consumer view: how a build author uses the plugin (installation, `easy {}` DSL, contributors,
+   - `README.md` — consumer view: how a build author uses the plugin (installation, `canon {}` DSL, contributors,
      master plugin, third-party contributors, build services). Never documents internals as if they were the API.
+     Contributor-author and repo-work docs live in `CONTRIBUTING.md` / `DEVELOPMENT.md`.
    - `CHANGELOG.md` — every user-visible change gets an entry under `Unreleased` (Keep a Changelog format).
    - `plans/` — each chunk has `plans/NN-<slug>.md` with status (`todo` / `in progress` / `done`); the tracker table
      in `plans/README.md` mirrors the current state. Update both when a chunk starts and when it lands.

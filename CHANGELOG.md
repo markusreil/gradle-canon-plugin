@@ -30,3 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Shared build services: `com.mreil.canon:canon-versioning-api` ships `SemverService` (parse +
   snapshot/release, version as a service parameter); `com.mreil.canon.publish` consumes it without
   depending on versioning. Started, not finished.
+- Linking verification: `maven-publish` on every module, test-publish to a CLI-given local repo,
+  `linkingTest` consumes master + third-party by coordinates (namespaces, propagation, override
+  failure all proven on published artifacts).
