@@ -36,7 +36,7 @@ later chunk is verified per change.
 
 | #  | Chunk | Plan file | Status | Notes |
 |----|-------|-----------|--------|-------|
-| 1  | CI: build main on every change, branches on every PR | `01-ci.md` | todo | First — fast feedback for the rest |
+| 1  | CI: build main on every change, branches on every PR | `01-ci.md` | done | Green on first runs; retro clean |
 | 2  | codemeta plugin: file model, init task, public service | `02-codemeta.md` | todo | Prerequisite for POM coordinates; kotlinx.serialization |
 | 3  | publish plugin core: mavenJava auto, POM coords from codemeta, repo set | `03-publish-core.md` | todo | Includes auto vs opt-in decision |
 | 4  | Tiered routing: snapshot/release/promotion guard + retroactive publish | `04-tiered-routing.md` | todo | Central limits shape the guard |
