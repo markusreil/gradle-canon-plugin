@@ -76,9 +76,9 @@ after check), keeping `check` offline-friendly per the Chunk 1 agreement.
    Verify: `linkingTest` green (runs `testPublish` first).
 - [x] **8.3 Docs.** README release-path paragraph + CHANGELOG entry describing exactly what the suite
    proves. Verify: prose matches tests.
-4. **8.4 Full gate.** `./gradlew check --rerun-tasks` green *plus* `linkingTest` green in documented
+- [x] **8.4 Full gate.** `./gradlew check --rerun-tasks` green *plus* `linkingTest` green in documented
    order; update `plans/README.md` (Chunk 8 → done). Verify: every suite executed.
-5. **8.5 Final retrospective.** Record outcome across all chunks, amend `AGENTS.md` if needed.
+- [x] **8.5 Final retrospective.** Outcome: nothing from the maintainer beyond the plan — the linking step landed without friction, which reads as payoff for the strictness banked in chunks 1–7 (fail-fast contracts, L1-heavy pyramid, enforced gates). No process changes.
 
 ## Verification
 

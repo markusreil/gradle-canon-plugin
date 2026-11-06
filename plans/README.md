@@ -13,6 +13,6 @@ Single view of what's done and what's still todo. Updated whenever a chunk start
 | 5 | Master bundling plugin (classpath auto-apply) | `05-master-plugin.md` | done | Single-id bundle + propagation green; full gate green |
 | 6 | Third-party contributor interop | `06-third-party-interop.md` | done | Sample coexists + propagates; clash fails fast; full gate green |
 | 7 | Shared build-service APIs (separate artifacts) | `07-shared-build-services.md` | done | Versioning-api service + publish consumer green; full gate green |
-| 8 | Published-artifact linking verification | `08-linking-verification.md` | todo | Depends on test-publish infra from Chunk 1 |
+| 8 | Published-artifact linking verification | `08-linking-verification.md` | done | Coordinates resolve, tree behaves; full gate + linking green |
 
 Statuses: `todo` → `in progress` (plan approved, work started) → `done` (acceptance criteria + verification met).
