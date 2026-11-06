@@ -1,19 +1,21 @@
 # AGENTS.md — gradle-easy-plugin-2
 
-How we work in this repo. Source of truth for workflow; SPEC.md is source of truth for product intent.
+How we work in this repo. Source of truth for workflow; product intent lives in `TODO.md` and the plans.
 
 ## Product in one paragraph
 
-A convention-plugin system for Gradle: one core plugin registers an `easy` extension container on all projects,
-contributor plugins add sub-extensions (e.g. `easy.jvm`), a master plugin bundles core + a chosen set of
+A convention-plugin system for Gradle: one core plugin registers a `canon` extension container on all projects,
+contributor plugins add sub-extensions (e.g. `canon.versioning`), a master plugin bundles core + a chosen set of
 contributors, third-party contributors can be applied alongside master, the extension tree propagates root → children
 with per-value copy semantics (deep / shallow / immutable), and contributors can expose public APIs as shared build
-services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-plan.md`.
+services in separate build artifacts. See `plans/00-high-level-plan.md` and `TODO.md`.
 
 ## How we work
 
 1. **Plan before code.** Every feature starts with a short implementation plan in `plans/`. Prefer small
    deliverables over one huge change. Do not implement a chunk without its plan being reviewed.
+   Work on feature branches; do not push `main` directly. Merging to `main` is a squashed fast-forward:
+   one (sub-)feature becomes one commit on `main`.
 2. **Spec tests first.** No implementation without a covering test. Write the failing test, then the minimal
    implementation, then refactor.
 3. **Small steps, one chunk at a time.** Implement the plan's chunks in order. Finish + verify one before starting
@@ -53,8 +55,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
      master plugin, third-party contributors, build services). Never documents internals as if they were the API.
      Contributor-author and repo-work docs live in `CONTRIBUTING.md` / `DEVELOPMENT.md`.
    - `CHANGELOG.md` — every user-visible change gets an entry under `Unreleased` (Keep a Changelog format).
-   - `plans/` — each chunk has `plans/NN-<slug>.md` with status (`todo` / `in progress` / `done`); the tracker table
-     in `plans/README.md` mirrors the current state. Update both when a chunk starts and when it lands.
+   - `plans/` — each chunk has `plans/NN-<slug>.md` with status (`todo` / `in progress` / `done`); the high-level
+     plan's chunk table mirrors the current state. Update both when a chunk starts and when it lands.
 8. **Minimal diffs.** Don't refactor unrelated code. Don't add abstractions for hypothetical needs.
 9. **Strict over undefined.** Functionality that is deliberately undecided must fail loudly when
    encountered (descriptive error, tested) — never silently skip, guess, or absorb it. Better a
@@ -64,8 +66,8 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
 
 ## Repo layout (evolving)
 
-- `SPEC.md` — product spec.
-- `plans/` — `README.md` (tracker) + `00-high-level-plan.md` + `NN-<chunk>.md` detailed plans as we write them.
+- `TODO.md` — parked ideas and plugin backlog.
+- `plans/` — `00-high-level-plan.md` + `NN-<chunk>.md` detailed plans as we write them.
 - `README.md` — consumer documentation.
 - `CHANGELOG.md` — release history.
 - Build sources (to be created in Chunk 1): `settings.gradle`, version catalog, subprojects.
