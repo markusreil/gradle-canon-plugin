@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+## [0.0.1] - 2026-11-06
+
+### Added
+
 - `SPEC.md` as product source of truth (core `easy` extension, contributors, master plugin, root→child
   propagation, shared build services, test strategy).
 - `AGENTS.md` working agreements (plan-first, spec-tests-first, small chunks, Farley four-layer acceptance
