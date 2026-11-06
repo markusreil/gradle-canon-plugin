@@ -72,7 +72,7 @@ fail-fast ordering, one public API per plugin (`canon-<name>-api`), service patt
    Verify: compiles.
 - [x] **2.2 Plugin + init task.** Holder, registration, `initCodemeta`, service wiring. Verify: compiles.
 - [x] **2.3 L1 proof.** Unit matrix for AC1–AC3. Verify: `:plugins:canon-codemeta:test` green.
-4. **2.4 L2 proof.** Two `GradleRunner` tests (init create/refuse + service on a real build).
+- [x] **2.4 L2 proof.** Two `GradleRunner` tests (init create/refuse + service on a real build).
    Verify: `:plugins:canon-codemeta:functionalTest` green.
 5. **2.5 Docs.** README/CONTRIBUTING/CHANGELOG touch-ups describing exactly what the tests prove.
    Verify: prose matches tests.
