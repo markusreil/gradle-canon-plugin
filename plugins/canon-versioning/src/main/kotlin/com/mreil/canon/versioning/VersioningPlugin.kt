@@ -1,7 +1,7 @@
 package com.mreil.canon.versioning
 
-import com.mreil.canon.semver.SemverService
-import com.mreil.canon.semver.parseVersion
+import com.mreil.canon.versioning.api.SemverService
+import com.mreil.canon.versioning.api.parseVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
@@ -39,10 +39,12 @@ class VersioningPlugin : Plugin<Project> {
     }
 
     private fun registerSemver(project: Project) {
-        val version = project.rootProject.version.toString()
-        parseVersion(version, project.path)
         project.gradle.sharedServices.registerIfAbsent("canonSemver", SemverService::class.java) {
-            it.parameters.version.set(version)
+            it.parameters.version.set(project.provider { project.rootProject.version.toString() })
+            it.parameters.projectPath.set(project.path)
+        }
+        project.afterEvaluate {
+            parseVersion(project.rootProject.version.toString(), project.path)
         }
     }
 }

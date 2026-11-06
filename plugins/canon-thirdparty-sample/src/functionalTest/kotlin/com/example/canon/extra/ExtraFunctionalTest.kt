@@ -96,6 +96,7 @@ class ExtraFunctionalTest {
         files.add(File(System.getProperty("canonVersioningJar")))
         files.add(File(System.getProperty("canonMasterJar")))
         files.add(File(System.getProperty("canonApiJar")))
+        files.add(File(System.getProperty("canonSemverJar")))
         files.add(semverJar())
         return files
     }

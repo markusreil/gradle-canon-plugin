@@ -44,7 +44,7 @@ detekt {
 
 dependencies {
     implementation(project(":plugins:canon-api"))
-    implementation(project(":plugins:canon-semver-service"))
+    implementation(project(":plugins:canon-versioning-api"))
 }
 
 testing {
@@ -85,7 +85,7 @@ testing {
                                     it.archiveFile
                                 }
                         val serviceJar =
-                                project(":plugins:canon-semver-service").tasks.named<Jar>("jar").flatMap {
+                                project(":plugins:canon-versioning-api").tasks.named<Jar>("jar").flatMap {
                                     it.archiveFile
                                 }
                         val apiJar =

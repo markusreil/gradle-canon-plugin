@@ -14,9 +14,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.io.TempDir
 
-/**
- * Publish is configuration surface: `enabled` gates service use, internals stay out of holders.
- */
+/** Publish is configuration surface: `enabled` gates service use, internals stay out of holders. */
 @ExtendWith(SoftAssertionsExtension::class)
 class PublishPluginTest {
 
@@ -67,16 +65,17 @@ class PublishPluginTest {
             readPool("com/mreil/canon/publish/PublishPlugin.class") +
                 readPool("com/mreil/canon/publish/PublishExtension.class")
 
-        softly.assertThat(pool).contains("com/mreil/canon/semver/")
-        softly.assertThat(pool).doesNotContain("com/mreil/canon/versioning/")
+        softly.assertThat(pool).contains("com/mreil/canon/versioning/api/")
+        softly.assertThat(pool).doesNotContain("com/mreil/canon/versioning/Versioning")
         softly.assertThat(pool).doesNotContain("com/mreil/canon/core/")
         softly.assertThat(pool).doesNotContain("com/mreil/canon/master/")
     }
 
     private fun readPool(path: String): String {
-        val stream = requireNotNull(javaClass.classLoader.getResourceAsStream(path)) {
-            "$path not on test classpath"
-        }
+        val stream =
+            requireNotNull(javaClass.classLoader.getResourceAsStream(path)) {
+                "$path not on test classpath"
+            }
         return stream.use { it.readAllBytes().toString(StandardCharsets.ISO_8859_1) }
     }
 

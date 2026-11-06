@@ -88,6 +88,7 @@ class CanonMasterFunctionalTest {
         files.add(File(System.getProperty("canonCoreJar")))
         files.add(File(System.getProperty("canonVersioningJar")))
         files.add(File(System.getProperty("canonApiJar")))
+        files.add(File(System.getProperty("canonSemverJar")))
         return files
     }
 

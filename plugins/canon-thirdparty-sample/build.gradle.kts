@@ -88,8 +88,12 @@ testing {
                                 project(":plugins:canon-api").tasks.named<Jar>("jar").flatMap {
                                     it.archiveFile
                                 }
-                        dependsOn(coreJar, versioningJar, masterJar, apiJar)
-                        inputs.files(coreJar, versioningJar, masterJar, apiJar)
+                        val serviceJar =
+                                project(":plugins:canon-versioning-api").tasks.named<Jar>("jar").flatMap {
+                                    it.archiveFile
+                                }
+                        dependsOn(coreJar, versioningJar, masterJar, apiJar, serviceJar)
+                        inputs.files(coreJar, versioningJar, masterJar, apiJar, serviceJar)
                         doFirst {
                             systemProperty(
                                     "canonCoreJar", coreJar.get().asFile.absolutePath)
@@ -98,6 +102,8 @@ testing {
                             systemProperty(
                                     "canonMasterJar", masterJar.get().asFile.absolutePath)
                             systemProperty("canonApiJar", apiJar.get().asFile.absolutePath)
+                            systemProperty(
+                                    "canonSemverJar", serviceJar.get().asFile.absolutePath)
                         }
                     }
                 }

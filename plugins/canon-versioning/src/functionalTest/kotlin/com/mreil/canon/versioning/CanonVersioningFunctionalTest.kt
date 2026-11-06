@@ -186,6 +186,7 @@ class CanonVersioningFunctionalTest {
                 .toMutableList()
         files.add(File(System.getProperty("canonCoreJar")))
         files.add(File(System.getProperty("canonApiJar")))
+        files.add(File(System.getProperty("canonSemverJar")))
         return files
     }
 

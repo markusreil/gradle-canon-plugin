@@ -1,11 +1,12 @@
 package com.mreil.canon.versioning
 
 import com.mreil.canon.core.CanonPlugin
-import com.mreil.canon.semver.SemverService
+import com.mreil.canon.versioning.api.SemverService
 import java.io.File
 import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension
 import org.gradle.api.Project
+import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.Test
@@ -110,30 +111,31 @@ class VersioningPluginTest {
     }
 
     @Test
-    fun garbageVersionFailsFastAtApply(softly: SoftAssertions) {
+    fun garbageVersionFailsAtEvaluation(softly: SoftAssertions) {
         val root = rootProject("banana")
         root.pluginManager.apply(CanonPlugin::class.java)
+        root.pluginManager.apply(VersioningPlugin::class.java)
 
         softly
-            .assertThatThrownBy { root.pluginManager.apply(VersioningPlugin::class.java) }
+            .assertThatThrownBy { (root as ProjectInternal).evaluate() }
             .isInstanceOf(RuntimeException::class.java)
             .hasStackTraceContaining("banana")
     }
 
     @Test
-    fun missingVersionFailsFastAtApply(softly: SoftAssertions) {
+    fun missingVersionFailsAtEvaluation(softly: SoftAssertions) {
         val root = rootProject("unspecified")
         root.pluginManager.apply(CanonPlugin::class.java)
+        root.pluginManager.apply(VersioningPlugin::class.java)
 
         softly
-            .assertThatThrownBy { root.pluginManager.apply(VersioningPlugin::class.java) }
+            .assertThatThrownBy { (root as ProjectInternal).evaluate() }
             .isInstanceOf(RuntimeException::class.java)
             .hasStackTraceContaining("has no version set")
     }
 
     private fun semverOf(project: Project): SemverService {
-        val registration =
-            project.gradle.sharedServices.registrations.getByName("canonSemver")
+        val registration = project.gradle.sharedServices.registrations.getByName("canonSemver")
         return registration.service.get() as SemverService
     }
 

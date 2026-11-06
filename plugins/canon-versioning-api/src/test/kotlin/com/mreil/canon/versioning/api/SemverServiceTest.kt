@@ -1,4 +1,4 @@
-package com.mreil.canon.semver
+package com.mreil.canon.versioning.api
 
 import org.assertj.core.api.SoftAssertions
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension

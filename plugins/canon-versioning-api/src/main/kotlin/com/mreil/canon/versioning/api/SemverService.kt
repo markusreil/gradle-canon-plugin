@@ -1,4 +1,4 @@
-package com.mreil.canon.semver
+package com.mreil.canon.versioning.api
 
 import org.gradle.api.provider.Property
 import org.gradle.api.services.BuildService
@@ -12,37 +12,33 @@ import org.semver4j.Semver
 abstract class SemverService : BuildService<SemverService.Params>, AutoCloseable {
 
     /**
-     * Service parameters: the raw version string to parse.
+     * Service parameters. Values are read when the service is first used, so late-set versions are
+     * picked up.
      */
     interface Params : BuildServiceParameters {
 
-        /**
-         * Raw version string (usually the root project's version).
-         */
+        /** Raw version string (usually the root project's version). */
         val version: Property<String>
+
+        /** Project path used in failure messages. */
+        val projectPath: Property<String>
     }
 
-    /**
-     * Parsed version, failing fast on garbage.
-     */
-    val parsed: Semver by lazy { parseVersion(parameters.version.get(), "<semver-service>") }
+    /** Parsed version, failing fast on garbage. */
+    val parsed: Semver by lazy {
+        parseVersion(parameters.version.get(), parameters.projectPath.get())
+    }
 
-    /**
-     * True when the parsed version is a snapshot, i.e. pre-release routing.
-     */
+    /** True when the parsed version is a snapshot, i.e. pre-release routing. */
     fun isSnapshot(): Boolean = parsed.isSnapshot()
 
     override fun close() = Unit
 }
 
-/**
- * True when this parsed version carries a `SNAPSHOT` pre-release identifier.
- */
+/** True when this parsed version carries a `SNAPSHOT` pre-release identifier. */
 fun Semver.isSnapshot(): Boolean = "SNAPSHOT" in preRelease
 
-/**
- * Dependency-light version parsing, lifted untouched for the shared service.
- */
+/** Dependency-light version parsing, lifted untouched for the shared service. */
 fun parseVersion(value: String, projectPath: String): Semver {
     if (value.isBlank() || value == "unspecified") {
         error(

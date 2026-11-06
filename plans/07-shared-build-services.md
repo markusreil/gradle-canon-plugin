@@ -32,7 +32,7 @@ rather than growing plan scope (AGENTS.md rule 9). DEEP merge stays deferred.
 
 ## Design (pick: `publish` consumes versioning's semver service)
 
-- New module `plugins/canon-semver-service` (group `com.mreil.canon`): the service API + implementation,
+- New module `plugins/canon-versioning-api` (group `com.mreil.canon`): the versioning public API
   owned versioning-side. It lifts the dependency-light `parseVersion` companion function untouched and
   exposes it as a shared build service (parsed version plus snapshot/release distinction — exactly what
   tiered artifact routing needs first).
@@ -74,7 +74,7 @@ rather than growing plan scope (AGENTS.md rule 9). DEEP merge stays deferred.
    API, registration and isolation rules, which tests prove what. No code. Verify: review approves.
 - [x] **7.2 Service module.** New module with the service API + implementation. Verify: compiles.
 - [x] **7.3 L1 proof.** Unit tests for AC1–AC3. Verify: green.
-4. **7.4 L2 proof.** `GradleRunner` test proving the wired experience. Verify: green.
+- [x] **7.4 L2 proof.** `GradleRunner` test proving the wired experience. Verify: green.
 5. **7.5 Docs.** README service section + CHANGELOG entry describing exactly what the tests prove.
    Verify: prose matches tests.
 6. **7.6 Full gate.** `./gradlew check --rerun-tasks` green; update `plans/README.md` (Chunk 7 →
