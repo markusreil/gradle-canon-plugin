@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `com.mreil.canon.codemeta` contributor: `codemeta.json` file model (`canon-codemeta-api` with
+  the full CodeMeta term set), `initCodemeta` task (creates the default file, then fails asking
+  the user to fill it in), shared `CodemetaService`; holders stay configuration-only.
+
 ## [0.0.1] - 2026-11-06
 
 ### Added

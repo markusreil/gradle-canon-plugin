@@ -3,6 +3,7 @@ junit = "5.14.4"
 assertj = "3.27.7"
 kotlin = "2.4.21"
 semver4j = "6.0.0"
+serialization = "1.12.0"
 jacoco = "0.8.16"
 spotless = "8.11.0"
 detekt = "1.23.8"
@@ -12,9 +13,11 @@ junit-bom = { group = "org.junit", name = "junit-bom", version.ref = "junit" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
 assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
 semver4j = { group = "org.semver4j", name = "semver4j", version.ref = "semver4j" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 maven-publish = { id = "maven-publish" }
