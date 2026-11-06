@@ -1,3 +1,4 @@
+import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.testing.jacoco.tasks.JacocoReport
 
@@ -8,6 +9,7 @@ plugins {
     jacoco
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.maven.publish)
 }
 
 group = "com.mreil.canon"
@@ -18,6 +20,22 @@ kotlin {
 
 detekt {
     config.setFrom(rootProject.file("config/detekt.yml"))
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
+    repositories {
+        providers.gradleProperty("testRepoUrl").orNull?.let { url ->
+            maven {
+                name = "testLocal"
+                setUrl(url)
+            }
+        }
+    }
 }
 
 dependencies {

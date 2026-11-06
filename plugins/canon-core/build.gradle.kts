@@ -11,6 +11,7 @@ plugins {
     jacoco
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.maven.publish)
 }
 
 spotless {
@@ -28,6 +29,17 @@ kotlin {
 
 detekt {
     config.setFrom(rootProject.file("config/detekt.yml"))
+}
+
+publishing {
+    repositories {
+        providers.gradleProperty("testRepoUrl").orNull?.let { url ->
+            maven {
+                name = "testLocal"
+                setUrl(url)
+            }
+        }
+    }
 }
 
 dependencies {

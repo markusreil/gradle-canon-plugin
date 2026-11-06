@@ -17,3 +17,4 @@ semver4j = { group = "org.semver4j", name = "semver4j", version.ref = "semver4j"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+maven-publish = { id = "maven-publish" }
