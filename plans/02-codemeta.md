@@ -78,7 +78,7 @@ fail-fast ordering, one public API per plugin (`canon-<name>-api`), service patt
    Verify: prose matches tests.
 - [x] **2.6 Full gate.** `./gradlew check --rerun-tasks` green; update high-level plan (Chunk 2 → done).
    Verify: every suite executed.
-7. **2.7 Chunk 2 retrospective.** Record outcome, amend `AGENTS.md` if needed.
+- [x] **2.7 Chunk 2 retrospective.** Outcome: process stands; no AGENTS.md changes. Lessons banked: root `apply false` for any build-logic plugin a single module uses (Spotless shared-service classloader clash); read the project version lazily (provider in service params, validation in `afterEvaluate`) because scripts set it after plugins apply; auto-wire `initCodemeta` first via task dependencies instead of failing configuration early; as a rule, let tasks fail at execution time, never at configuration time; inject shared services with `@ServiceReference` (gives a `Provider`) so even service usage stays lazy.
 
 ## Verification
 
