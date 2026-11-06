@@ -44,6 +44,10 @@ services in separate build artifacts. See `SPEC.md` and `plans/00-high-level-pla
    - Test suites may depend on sibling modules to set up fixtures (e.g. applying another plugin under test);
      shipped artifacts stay decoupled — the dependency lives in the `testing { suites { … } }` block, never in
      main.
+   - One public API per plugin: shared types live in a `canon-<name>-api` module owned by that contributor
+     (e.g. `canon-versioning-api`); consumers depend on the api module only.
+   - Read extension state late: `afterEvaluate` is acceptable for ensuring up-to-date properties; almost
+     all other cases should use live collections, `on*Added`, etc.
 7. **Docs are part of done.** Keep these updated in the same change that makes them stale:
    - `README.md` — consumer view: how a build author uses the plugin (installation, `easy {}` DSL, contributors,
      master plugin, third-party contributors, build services). Never documents internals as if they were the API.

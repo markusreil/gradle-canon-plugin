@@ -12,11 +12,9 @@ API (tiered routing and the rest stay backlog).
 
 ## Open (parked, not decided)
 
-## Open (parked, not decided)
-
 - Consumer access pattern: fail fast if the service is missing vs lazy `Provider<Service>`?
-  Split service into interface + impl? Service creation/discovery could become a `core-api`
-  pattern — needs a bigger sample size to prove. Do not decide yet.
+  Split service into interface + impl? Service creation / consumption helper as a fixed pattern in
+  `core-api`? All parked — needs a bigger sample size to prove. Do not decide yet.
 
 ## Non-goals (explicitly deferred)
 
@@ -77,9 +75,15 @@ rather than growing plan scope (AGENTS.md rule 9). DEEP merge stays deferred.
 - [x] **7.4 L2 proof.** `GradleRunner` test proving the wired experience. Verify: green.
 - [x] **7.5 Docs.** README service section + CHANGELOG entry describing exactly what the tests prove.
    Verify: prose matches tests.
-6. **7.6 Full gate.** `./gradlew check --rerun-tasks` green; update `plans/README.md` (Chunk 7 →
+- [x] **7.6 Full gate.** `./gradlew check --rerun-tasks` green; update `plans/README.md` (Chunk 7 →
    done). Verify: every suite executed.
-7. **7.7 Chunk 7 retrospective (required before Chunk 8).** Record outcome, amend `AGENTS.md` if needed.
+- [x] **7.7 Chunk 7 retrospective (required before Chunk 8).** Outcome: one AGENTS.md amendment (one
+  public API per plugin: `canon-<name>-api`). Lessons banked: read the version lazily (apply-time reads
+  see the pre-script value — service params take a provider, validation moves to `afterEvaluate`, which
+  is acceptable for up-to-date properties while live collections / `on*Added` cover almost everything
+  else); every
+  new module with a Gradle-touching main must join the L2 fixture classpaths by hand (TestKit has no
+  transitivity — versioning-api jar added to versioning/master/sample/publish fixtures).
 
 ## Verification
 
