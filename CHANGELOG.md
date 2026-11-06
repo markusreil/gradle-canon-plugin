@@ -25,5 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `scheme` is now a `Property<String>` marked `IMMUTABLE`.
 - `com.mreil.canon` master bundle: applying the single id wires core plus the curated contributors
   (currently `canon.versioning`); versions move in lockstep.
-- Third-party interop proven by the `extra` sample: foreign holders propagate, both apply orders work,
-  clashes fail fast; sample stays api-only and never joins the bundle.
+- Third-party interop proven by the `extra` sample: foreign holders propagate, missing `canon`
+  fails fast, clashes fail fast; sample stays api-only and never joins the bundle.
+- Shared build services: `com.mreil.canon:canon-versioning-api` ships `SemverService` (parse +
+  snapshot/release, version as a service parameter); `com.mreil.canon.publish` consumes it without
+  depending on versioning. Started, not finished.

@@ -14,14 +14,15 @@ Convention plugins for Gradle, built around one shared `canon` extension.
   `apply` needed. Bundle and contributors version in lockstep.
 - **Third-party contributors** apply their own plugin id next to the master bundle and wire into the
   same `canon` tree — no core classes needed, only `canon-api`. The reference is the `extra` sample:
-  its `mode` propagates root → children, both apply orders work, and name clashes fail fast with a
+  its `mode` propagates root → children, a missing core fails fast, and name clashes fail fast with a
   contract message.
 - Values set on the **root** project flow into **children** once the root is evaluated: `Property`
   values are inherited as conventions (an absent root value leaves children untouched), values marked
   `IMMUTABLE` additionally fail the build if a child overrides them. Collection properties
   (`ListProperty`, …) are reserved for deep merge (not implemented yet); anything else only
   propagates with an explicit `@Propagate` mark.
-- Contributors can expose **shared build services** (separate artifacts) that other contributors consume.
+- Contributors expose cross-cutting logic as **shared build services** (separate artifacts) that other
+  contributors consume without depending on the whole contributor.
 
 ## Intended usage (target API — not yet implemented)
 
@@ -47,8 +48,14 @@ canon {
 // override or extend only what differs.
 ```
 
-Build services (when available) are consumed through Gradle's shared-service mechanism; each service ships as
-its own artifact so builds only depend on what they use. Details will be documented per contributor as they land.
+## Shared build services
+
+Cross-cutting logic ships as a build service in its own artifact, owned by one contributor and
+consumed by others without a contributor-to-contributor dependency. Reference: `canon-versioning-api`
+(`SemverService` — parse plus snapshot/release distinction, version supplied as a service parameter by
+the versioning plugin, fail-fast on garbage). `canon.publish` consumes it to decide routing. Each
+plugin keeps one public API; service consumer patterns (fail-fast vs lazy, interface split) stay open
+until more consumers prove them.
 
 ## Writing a contributor plugin
 
