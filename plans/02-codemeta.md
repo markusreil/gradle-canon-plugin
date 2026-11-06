@@ -74,7 +74,7 @@ fail-fast ordering, one public API per plugin (`canon-<name>-api`), service patt
 - [x] **2.3 L1 proof.** Unit matrix for AC1–AC3. Verify: `:plugins:canon-codemeta:test` green.
 - [x] **2.4 L2 proof.** Two `GradleRunner` tests (init create/refuse + service on a real build).
    Verify: `:plugins:canon-codemeta:functionalTest` green.
-5. **2.5 Docs.** README/CONTRIBUTING/CHANGELOG touch-ups describing exactly what the tests prove.
+- [x] **2.5 Docs.** README/CONTRIBUTING/CHANGELOG touch-ups describing exactly what the tests prove.
    Verify: prose matches tests.
 6. **2.6 Full gate.** `./gradlew check --rerun-tasks` green; update high-level plan (Chunk 2 → done).
    Verify: every suite executed.
